@@ -104,8 +104,9 @@ class Category(db.Model):
                             autoincrement=True,
                             primary_key=True)
     category = db.Column(db.string) 
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"))
-
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id")) 
+    
+    #Do I als need a relationship backref for recipe?
 
 
 class RecipeCategory(db.Model):
@@ -118,6 +119,8 @@ class RecipeCategory(db.Model):
                             primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.genre_id"), nullable=False)
+
+    #Do I also need a relationship line? unsure how middle talbe works
 
     
 
