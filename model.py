@@ -10,7 +10,7 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    username = db.Column(db.String,
+    user = db.Column(db.String,
                         primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
@@ -20,7 +20,7 @@ class User(db.Model):
     # recipes = a list of Recipe objects    ##ask about this relationship in code review
 
     def__repr__(self):
-        return f'<User username={self.username} email={self.email}>'
+        return f'<User user={self.user} email={self.email}>'
 
 
 
@@ -34,11 +34,11 @@ class Comment(db.Model):
                             autoincrement=True,
                             primary_key=True)
     comment_body = db.Column(db.String)
-    user = db.Column(db.String, db.ForeignKey("users.username"), nullable=False)
-    recipe = db.Column(db.String, db.ForeignKey("recipe.recipe_id"), nullable=False)
+    user = db.Column(db.String, db.ForeignKey("users.user"), nullable=False)
+    recipe = db.Column(db.String, db.ForeignKey("recipes.recipe_id"), nullable=False)
 
-    user = db.relationship("User", backref="comment")
-    recipe = db.relationship("Recipe", backref="comment")
+    user = db.relationship("User", backref="comments")
+    recipe = db.relationship("Recipe", backref="comments")
 
 
     def __repr__(self):
@@ -55,7 +55,7 @@ class Rating(db.Model):
                             autoincrement=True,
                             primary_key=True)
     score = db.Column(db.Integer)
-    user = db.Column(db.String, db.ForeignKey("users.username"), nullable=False)
+    user = db.Column(db.String, db.ForeignKey("users.user"), nullable=False)
     recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"), nullable=False)
 
     user = db.relationship("User", backref="ratings")
@@ -78,7 +78,7 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text)
     ingr_amount = db.Column(db.String)
     instructions = db.Column(db.Text)
-    category = db.Column(db.String, db.ForeignKey("category.cagegory_id"), nullable=False)
+    category = db.Column(db.String, db.ForeignKey("categories.cagegory_id"), nullable=False)
 
     categories = db.relationship("Category", secondary="recipe_category", backref="recipes")
 
@@ -120,12 +120,6 @@ class RecipeCategory(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey("categories.genre_id"), nullable=False)
 
     
-
-
-
-
-
-
 
 def connect_to_db(flask_app, db_uri="postgresql:///ratings", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
