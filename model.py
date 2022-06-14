@@ -10,14 +10,15 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    user = db.Column(db.String,
+    user_id = db.Column(db.Integer,
+                        autoincrement=True,
                         primary_key=True)
     email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
 
     # ratings = a list of Rating objects
     # comments = a list of Comment objects
-    # recipes = a list of Recipe objects    ##ask about this relationship in code review
+    # recipes = a list of Recipe objects
 
     def__repr__(self):
         return f'<User user={self.user} email={self.email}>'
@@ -33,9 +34,9 @@ class Comment(db.Model):
     comment_id = db.Column(db.Integer,
                             autoincrement=True,
                             primary_key=True)
-    comment_body = db.Column(db.String)
-    user = db.Column(db.String, db.ForeignKey("users.user"), nullable=False)
-    recipe = db.Column(db.String, db.ForeignKey("recipes.recipe_id"), nullable=False)
+    comment_body = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"), nullable=False)
 
     user = db.relationship("User", backref="comments")
     recipe = db.relationship("Recipe", backref="comments")
@@ -55,7 +56,7 @@ class Rating(db.Model):
                             autoincrement=True,
                             primary_key=True)
     score = db.Column(db.Integer)
-    user = db.Column(db.String, db.ForeignKey("users.user"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"), nullable=False)
 
     user = db.relationship("User", backref="ratings")
@@ -78,7 +79,6 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text)
     ingr_amount = db.Column(db.String)
     instructions = db.Column(db.Text)
-    category = db.Column(db.String, db.ForeignKey("categories.cagegory_id"), nullable=False)
 
     categories = db.relationship("Category", secondary="recipe_category", backref="recipes")
 
@@ -103,10 +103,9 @@ class Category(db.Model):
     category_id = db.Column(db.Integer,
                             autoincrement=True,
                             primary_key=True)
-    category = db.Column(db.string) 
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id")) 
+    category = db.Column(db.String) 
     
-    #Do I als need a relationship backref for recipe?
+    #recipes
 
 
 class RecipeCategory(db.Model):
@@ -118,13 +117,11 @@ class RecipeCategory(db.Model):
                             autoincrement=True,
                             primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.genre_id"), nullable=False)
-
-    #Do I also need a relationship line? unsure how middle talbe works
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.category_id"), nullable=False)
 
     
 
-def connect_to_db(flask_app, db_uri="postgresql:///ratings", echo=True):
+def connect_to_db(flask_app, db_uri="postgresql:///recipes", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = false
@@ -136,9 +133,3 @@ def connect_to_db(flask_app, db_uri="postgresql:///ratings", echo=True):
 
 if __name__ == "__main__":
     from server import app
-
-    # Call connect_to_db(app, echo=False) if your program output gets
-    # too annoying; this will tell SQLAlchemy not to print out every
-    # query it executes.
-
-    connect_to_db(app)
