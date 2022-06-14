@@ -77,7 +77,6 @@ class Recipe(db.Model):
                             primary_key=True)
     name = db.Column(db.String)
     ingredients = db.Column(db.Text)
-    ingr_amount = db.Column(db.String)
     instructions = db.Column(db.Text)
 
     categories = db.relationship("Category", secondary="recipe_category", backref="recipes")
@@ -105,7 +104,7 @@ class Category(db.Model):
                             primary_key=True)
     category = db.Column(db.String) 
     
-    #recipes
+    #recipes = a list of Recipe objects
 
 
 class RecipeCategory(db.Model):
@@ -119,7 +118,7 @@ class RecipeCategory(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.category_id"), nullable=False)
 
-    
+
 
 def connect_to_db(flask_app, db_uri="postgresql:///recipes", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
