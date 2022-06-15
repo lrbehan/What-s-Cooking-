@@ -19,9 +19,10 @@ class User(db.Model):
     # ratings = a list of Rating objects
     # comments = a list of Comment objects
     # recipes = a list of Recipe objects
+    # saved_recipes = a list of Saved_Recipe objects
 
-    def__repr__(self):
-        return f'<User user={self.user} email={self.email}>'
+    def __repr__(self):
+        return f'<User user={self.user_id} email={self.email}>'
 
 
 
@@ -79,19 +80,34 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text)
     instructions = db.Column(db.Text)
 
-    categories = db.relationship("Category", secondary="recipe_category", backref="recipes")
+    category = db.relationship("Category", secondary="recipe_category", backref="recipes")
 
     # ratings = a list of Rating objects
     # comments = a list of Comment objects
+    # saved_recipies = a list of Saved_Recipe objects
     
 
 
     def __repr__(self):
-        return f'<Recipe recipe_id={self.recipe_id}
-                        name={self.name}
-                        ingredients={self.ingredients}
-                        ingr_amount={self.ingr_amount}
-                        instructions={self.instructions}>'
+        return f'<Recipe recipe_id={self.recipe_id}, name={self.name}, ingredients={self.ingredients}, instructions={self.instructions}>'
+
+
+    
+class Saved_Recipe(db.Model):
+    """A recipe saved by user"""
+
+    __tablename__ = "saved_recipes"
+
+    saved_recipe_id = db.Column(db.Integer,
+                                autoincrement=True,
+                                primary_key=True)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"), nullable=False)
+
+
+    recipe = db.relationship("Recipe", backref="saved_recipes")
+    user = db.relationship("User", backref="saved_recipes")
 
 
 class Category(db.Model):
@@ -123,7 +139,7 @@ class RecipeCategory(db.Model):
 def connect_to_db(flask_app, db_uri="postgresql:///recipes", echo=True):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
-    flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = false
+    flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.app = flask_app
     db.init_app(flask_app)
@@ -132,3 +148,4 @@ def connect_to_db(flask_app, db_uri="postgresql:///recipes", echo=True):
 
 if __name__ == "__main__":
     from server import app
+    connect_to_db(app)
