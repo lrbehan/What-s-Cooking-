@@ -33,7 +33,7 @@ def register_user():
     user = crud.get_user_by_email(email)
     
     if user:
-        flash(f'Cannot create an account with that e-mail')
+        flash(f'Cannot create an account with that email')
     else:
         user = crud.create_user(email, password)
 
@@ -56,7 +56,7 @@ def login_user():
     else:
         session["user_email"] = user.email
         flash('Logged in')
-    return redirect("/user_home")
+        return redirect("/user_home")
 
 
 @app.route('/user_home')
@@ -72,7 +72,7 @@ def find_recipes():
     keyword = request.args.get('keyword', '')
 
     url = 'https://api.spoonacular.com/recipes/complexSearch'
-    payload = {apiKey: API_KEY, 'keyword': keyword}
+    payload = {'apiKey': 'API_KEY', 'keyword': 'keyword'}
        
     res = requests.get(ulr, params=payload)
     data = res.json()
