@@ -59,6 +59,31 @@ def login_user():
     return redirect("/user_home")
 
 
+@app.route('/user_home')
+def user_home():
+    """Show the User's homepage."""
+
+    return render_template('user_home.html')
+
+@app.route('/search')
+def find_recipes():
+    """Search for recipes on Spoonacular"""
+
+    keyword = request.args.get('keyword', '')
+
+    url = 'https://api.spoonacular.com/recipes/complexSearch'
+    payload = {apiKey: API_KEY, 'keyword': keyword}
+       
+    res = requests.get(ulr, params=payload)
+    data = res.json()
+
+    return render_template('search-results.html',
+                            pformat=pformat,
+                            data=data,
+                            results=recipes)
+    
+
+
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)
