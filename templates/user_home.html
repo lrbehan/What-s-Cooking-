@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}User Home{% endblock %}
+
+{% block body %}
+<h2>User Home Page</h2>
+    
+  <p>
+    <h2>Search for Recipes</h2>
+    <form action="/search">
+      <p>
+        Search <input type="text" name="search">
+      </p>
+      <p>
+        <input type="submit">
+      </p>
+    </form>
+  
+ 
+  </p>
+{% endblock %}
