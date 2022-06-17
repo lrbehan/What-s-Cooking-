@@ -3,24 +3,11 @@
 
 {% block body %}
     <div id="search-results">
-    <h2>Search results</h2>
-          <pre>{{ pformat(data) }}</pre>
-        </div>
-
-        <div id="recipe-search-results">
-          <h2>Recipe Search Results</h2>
-
-          <p>
-            <span id="result-count">
-              {{ data['page']['totalResults'] }}
-            </span>
-            recipes matched your search.
-          </p>
-
-          <ul class="recipes-list">
-            {% for recipe in results %}
+      <h2>Recipe Search Results</h2>
+        <ul class="recipes-list">
+            {% for recipe in recipes %}
               <li>
-                <a href="/recipe/{{ recipe['id'] }}" target="_blank">
+                <a href="/recipes/{{ recipe['id'] }}">
                   {{ recipe['title'] }}
                 </a>
               </li>

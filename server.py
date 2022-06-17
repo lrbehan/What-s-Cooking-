@@ -69,19 +69,20 @@ def user_home():
 def find_recipes():
     """Search for recipes on Spoonacular"""
 
-    keyword = request.args.get('keyword', '')
+    query = request.args.get('query', '')
 
-    url = 'https://api.spoonacular.com/recipes/complexSearch'
-    payload = {'apiKey': 'API_KEY', 'keyword': 'keyword'}
+    url = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch'
+    payload = {'apiKey': API_KEY, 'query': query}
+
+    headers = {
+	"X-RapidAPI-Key": API_KEY,
+	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
        
-    res = requests.get(ulr, params=payload)
-    data = res.json()
+    results = requests.request("GET", url, headers=headers, params=payload)
+    print(results.text)
 
-    return render_template('search-results.html',
-                            pformat=pformat,
-                            data=data,
-                            results=recipes)
-    
+    return render_template('search_results.html')
+
 
 
 if __name__ == '__main__':
