@@ -5,13 +5,15 @@
     <div id="search-results">
       <h2>Recipe Search Results</h2>
         <ul class="recipes-list">
-            {% for recipe in recipes %}
+            {% for recipe in recipe_list %}
               <li>
-                <a href="/recipes/{{ recipe['id'] }}">
-                  {{ recipe['title'] }}
-                </a>
+                <img src="{{recipe['image']}}" width="10%" height="10%">
+                <div>
+                  <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['id'], recipe['title'] }}
+                  </a>
               </li>
             {% endfor %}
+                </div>
           </ul>
         </div>
      

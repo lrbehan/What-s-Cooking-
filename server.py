@@ -14,7 +14,17 @@ app.secret_key = 'SECRETSECRETSECRET'
 # more useful (you should remove this line in production though)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
+
 API_KEY = os.environ['SPOONACULAR_KEY']
+
+#Base url for spoonactular without endpoints
+URL = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes'
+
+# Spoonacular headers are added for every query
+HEADERS = {
+	"X-RapidAPI-Key": API_KEY,
+	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
+
 
 @app.route('/')
 def homepage():
@@ -61,28 +71,36 @@ def login_user():
 
 @app.route('/user_home')
 def user_home():
-    """Show the User's homepage."""
+    """Show the User's homepage after login"""
 
     return render_template('user_home.html')
+
 
 @app.route('/search')
 def find_recipes():
     """Search for recipes on Spoonacular"""
 
     query = request.args.get('query', '')
+    search_endpoint = '/complexSearch' #endpoint for search
 
-    url = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch'
-    payload = {'apiKey': API_KEY, 'query': query}
-
-    headers = {
-	"X-RapidAPI-Key": API_KEY,
-	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
+    payload = {"ranking":"1", "query":request.args['query']} #get query from search page
        
-    results = requests.request("GET", url, headers=headers, params=payload)
-    print(results.text)
+    results = requests.request("GET", URL + search_endpoint, headers=HEADERS, params=payload).json()
+    recipe_list = results['results'] 
 
-    return render_template('search_results.html')
+    return render_template('search_results.html', recipe_list=recipe_list)
 
+
+@app.route('/recipe_details')
+def get_recipe_details():
+    """Show recipe details"""
+
+    # endpoint for recipe details
+    info_endpoint = "/{}information.format()"
+
+    results = requests.request("GET", URL + info_endpoint, headers=HEADERS, params=payload).json()
+    
+    return render_template('recipe_details.html', results=results)
 
 
 if __name__ == '__main__':
