@@ -15,16 +15,6 @@ app.secret_key = 'SECRETSECRETSECRET'
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 
-API_KEY = os.environ['SPOONACULAR_KEY']
-
-#Base url for spoonactular without endpoints
-URL = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes'
-
-# Spoonacular headers are added for every query
-HEADERS = {
-	"X-RapidAPI-Key": API_KEY,
-	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
-
 
 @app.route('/')
 def homepage():
@@ -75,6 +65,15 @@ def user_home():
 
     return render_template('user_home.html')
 
+API_KEY = os.environ['SPOONACULAR_KEY']
+
+#Base url for spoonactular without endpoints
+URL = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes'
+
+# Spoonacular headers are added for every query
+HEADERS = {
+	"X-RapidAPI-Key": API_KEY,
+	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
 
 @app.route('/search')
 def find_recipes():
@@ -91,16 +90,22 @@ def find_recipes():
     return render_template('search_results.html', recipe_list=recipe_list)
 
 
-@app.route('/recipe_details')
+@app.route('/recipe')
 def get_recipe_details():
     """Show recipe details"""
 
-    # endpoint for recipe details
-    info_endpoint = "/{}information.format()"
+    recipe_id = request.args['id']
 
-    results = requests.request("GET", URL + info_endpoint, headers=HEADERS, params=payload).json()
+    recipe = requests.request("GET", URL + (f"/{recipe_id}/information"), headers=HEADERS).json()
+    ingredients = recipe['extendedIngredients']
+
+    return render_template('recipe_details.html', recipe=recipe, ingredients=ingredients)
     
-    return render_template('recipe_details.html', results=results)
+    #example of an information request https://api.spoonacular.com/recipes/716429/information?apiKey=a3085bb64b4848fca7cf983ebc290d04
+
+
+
+
 
 
 if __name__ == '__main__':
