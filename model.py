@@ -19,11 +19,14 @@ class User(db.Model):
     # ratings = a list of Rating objects
     # comments = a list of Comment objects
     # recipes = a list of Recipe objects
-    # saved_recipes = a list of Saved_Recipe objects
+    # saved_recipes = a list of Saved_recipe objects
 
     def __repr__(self):
         return f'<User user={self.user_id} email={self.email}>'
-
+    
+    @classmethod
+    def get_by_email(cls, email):
+        return cls.query.filter(User.email == email).first()
 
 
 
@@ -74,9 +77,8 @@ class Recipe(db.Model):
     __tablename__ = "recipes"
 
     recipe_id = db.Column(db.Integer,
-                            autoincrement=True,
                             primary_key=True)
-    name = db.Column(db.String)
+    title = db.Column(db.String)
     ingredients = db.Column(db.Text)
     instructions = db.Column(db.Text)
 
@@ -84,16 +86,18 @@ class Recipe(db.Model):
 
     # ratings = a list of Rating objects
     # comments = a list of Comment objects
-    # saved_recipies = a list of Saved_Recipe objects
-    
-
 
     def __repr__(self):
-        return f'<Recipe recipe_id={self.recipe_id}, name={self.name}, ingredients={self.ingredients}, instructions={self.instructions}>'
+        return f'<Recipe recipe_id={self.recipe_id}, title={self.title}, ingredients={self.ingredients}, instructions={self.instructions}>'
 
+    @classmethod
+    def create(cls, title, ingredients, instructions):
+        """create a recipe"""
+
+        return cls(title=title, ingredients=ingredients, instructions=instructions)
 
     
-class Saved_Recipe(db.Model):
+class SavedRecipe(db.Model):
     """A recipe saved by user"""
 
     __tablename__ = "saved_recipes"
@@ -108,6 +112,12 @@ class Saved_Recipe(db.Model):
 
     recipe = db.relationship("Recipe", backref="saved_recipes")
     user = db.relationship("User", backref="saved_recipes")
+    
+    @classmethod
+    def create(cls, recipe_id, user_id):
+        """create a recipe"""
+
+        return cls(recipe_id=recipe_id, user_id=user_id)
 
 
 class Category(db.Model):

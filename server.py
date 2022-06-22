@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, session, redirect
-from model import connect_to_db, db, User, Comment, Rating, Recipe, Saved_Recipe
+from model import connect_to_db, db, User, Comment, Rating, Recipe, SavedRecipe
 import crud
 
 from pprint import pformat
@@ -53,6 +53,7 @@ def login_user():
 
     if not user or user.password != password:
         flash('email or password does not match')
+        return redirect("/")
     else:
         session["user_email"] = user.email
         flash('Logged in')
@@ -74,6 +75,7 @@ URL = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes'
 HEADERS = {
 	"X-RapidAPI-Key": API_KEY,
 	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
+
 
 @app.route('/search')
 def find_recipes():
@@ -97,16 +99,51 @@ def get_recipe_details():
     recipe_id = request.args['id']
 
     recipe = requests.request("GET", URL + (f"/{recipe_id}/information"), headers=HEADERS).json()
+    
     ingredients = recipe['extendedIngredients']
+    
+    data = recipe['analyzedInstructions']
+    steps = data[0]['steps']
+    instructions = []
+    for step in steps:
+        instructions.append(step['step'])
 
-    return render_template('recipe_details.html', recipe=recipe, ingredients=ingredients)
+
+    return render_template('recipe_details.html', recipe=recipe, ingredients=ingredients, instructions=instructions)
     
     #example of an information request https://api.spoonacular.com/recipes/716429/information?apiKey=a3085bb64b4848fca7cf983ebc290d04
 
 
+@app.route('/save', methods=['POST'])
+def save_recipe():
+    """Add recipe to database"""
+
+    logged_in_email = session.get("user_email")
+    
+    id = request.json.get("id")
+    title = request.json.get("title")
+    ingredients = request.json.get("ingredients")
+    instructions = request.json.get("instructions")
 
 
+    user = User.get_by_email(logged_in_email)
+        
+    recipe = Recipe.create(title, ingredients, instructions)
+    
+    db.session.add(recipe)
+    db.session.commit()
 
+    saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
+    
+    db.session.add(saved_recipe)
+    db.session.commit()
+
+    return "recipe saved"
+
+@app.route("/recipes")
+def recipes():
+    """View all recipes."""
+    recipes = crud.get_recipes()
 
 if __name__ == '__main__':
     connect_to_db(app)
