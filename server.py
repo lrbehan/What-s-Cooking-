@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, flash, session, redirect
 from model import connect_to_db, db, User, Comment, Rating, Recipe, SavedRecipe
 import crud
-
 from pprint import pformat
 import os
 import requests
@@ -45,26 +44,42 @@ def register_user():
 
 @app.route('/login', methods=["POST"])
 def login_user():
+    """User login"""
 
     email = request.form.get("email")
     password = request.form.get("password")
 
-    user = crud.get_user_by_email(email)
-
-    if not user or user.password != password:
-        flash('email or password does not match')
-        return redirect("/")
+    if crud.get_user_by_email(email):
+        
+        user = crud.get_user_by_email(email)
+        if user.password != password:
+            flash('Incorrect password')
+            return redirect("/")
+        else:
+            session["user_email"] = user.email
+            flash('Logged in')
+            return redirect("/user_home") 
     else:
-        session["user_email"] = user.email
-        flash('Logged in')
-        return redirect("/user_home")
+        flash('New email, please create account')
+        return redirect("/")
+
+
+@app.route('/logout')
+def logout_user():
+    """logs out user"""
+
+    session['current_user'] = None
+    session['current_email'] = None
+    flash("Logged out. Come back soon!") 
+    return redirect('/')
 
 
 @app.route('/user_home')
 def user_home():
     """Show the User's homepage after login"""
-
+    
     return render_template('user_home.html')
+
 
 API_KEY = os.environ['SPOONACULAR_KEY']
 
@@ -103,11 +118,12 @@ def get_recipe_details():
     ingredients = recipe['extendedIngredients']
     
     data = recipe['analyzedInstructions']
+    print(data)
+
     steps = data[0]['steps']
     instructions = []
     for step in steps:
         instructions.append(step['step'])
-
 
     return render_template('recipe_details.html', recipe=recipe, ingredients=ingredients, instructions=instructions)
     
@@ -120,15 +136,15 @@ def save_recipe():
 
     logged_in_email = session.get("user_email")
     
-    id = request.json.get("id")
-    title = request.json.get("title")
-    ingredients = request.json.get("ingredients")
-    instructions = request.json.get("instructions")
 
+    json = request.json
+    title = json['title']
+    ingredients = json['ingredients']
+    instructions = json['instructions']
 
     user = User.get_by_email(logged_in_email)
         
-    recipe = Recipe.create(title, ingredients, instructions)
+    recipe = Recipe.create(title=title, ingredients=ingredients, instructions=instructions)
     
     db.session.add(recipe)
     db.session.commit()
@@ -140,10 +156,26 @@ def save_recipe():
 
     return "recipe saved"
 
-@app.route("/recipes")
-def recipes():
-    """View all recipes."""
-    recipes = crud.get_recipes()
+@app.route("/recipe/<recipe_id>", methods=["POST"])
+def create_rating(recipe_id):
+    """Create a new rating for a recipe"""
+
+    rating_score = request.form.get("rating")
+
+    if not rating_score:
+        flash("Error: you didn't select a score for your rating.")
+    else:
+        user = User.get_by_email(logged_in_email)
+        recipe = Recipe.get_by_id(recipe_id)
+
+        rating = Rating.create(user, rating, int(rating_score))
+        db.session.add(rating)
+        db.session.commit()
+
+        flash(f"You rated this recipe {rating_score} out of 5.")
+
+    return redirect(f"/recipe/{recipe_id}")
+
 
 if __name__ == '__main__':
     connect_to_db(app)

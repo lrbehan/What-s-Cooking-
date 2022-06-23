@@ -77,10 +77,12 @@ class Recipe(db.Model):
     __tablename__ = "recipes"
 
     recipe_id = db.Column(db.Integer,
-                            primary_key=True)
+                        autoincrement=True,
+                        primary_key=True)
     title = db.Column(db.String)
     ingredients = db.Column(db.Text)
     instructions = db.Column(db.Text)
+
 
     category = db.relationship("Category", secondary="recipe_category", backref="recipes")
 
@@ -112,6 +114,7 @@ class SavedRecipe(db.Model):
 
     recipe = db.relationship("Recipe", backref="saved_recipes")
     user = db.relationship("User", backref="saved_recipes")
+    
     
     @classmethod
     def create(cls, recipe_id, user_id):

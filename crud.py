@@ -20,10 +20,24 @@ def get_user_by_email(email):
 
     return User.query.filter(User.email == email).first()
 
+def create_recipe(title, ingredients, instructions):
+    """Create and return recipe after edit"""
+    recipe = Recipe(title = title, ingredients = ingredients, instructions = instructions)
+    return recipe
+
 def get_recipes():
     """Return all recipes."""
-    
     return Recipe.query.all()
+
+def get_recipe_by_id(recipe_id):
+    """Return recipe by recipe_id"""
+    return Recipe.query.get(recipe_id)
+
+def get_recipes_saved(user_id):
+    """Return recipes saved by specific user"""
+    return Recipe.query.filter(SavedRecipe.user_id).all()
+
+
     
 if __name__ == '__main__':
     from server import app
