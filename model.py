@@ -68,7 +68,7 @@ class Rating(db.Model):
 
 
     def __repr__(self):
-        return f'<Rating rating_id={self.rating.id} score={self.score}>'
+        return f'<Rating rating_id={self.rating_id} score={self.score}>'
 
 
 class Recipe(db.Model):
@@ -83,9 +83,9 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text)
     instructions = db.Column(db.Text)
     image_path = db.Column(db.String)
-    sourceUrl = db.Column(db.String)
+    user_id = db.Column (db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     
-    user = db.relationship("User", secondary="saved_recipes", backref="recipes")
+    user = db.relationship("User", backref="recipes")
     category = db.relationship("Category", secondary="recipe_category", backref="recipes")
 
     # ratings = a list of Rating objects

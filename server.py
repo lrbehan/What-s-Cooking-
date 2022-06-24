@@ -61,12 +61,17 @@ def login_user():
         flash('New email, please create account')
         return redirect("/")
 
+
 @app.route('/user_home')
 def user_home():
     """Show the User's homepage after login"""
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
-    return render_template('user_home.html', user=user)
+    recipes = crud.get_all_recipes_for_user(user.user_id)
+    
+
+    return render_template('user_home.html', user=user, recipes=recipes)
+
 
 API_KEY = os.environ['SPOONACULAR_KEY']
 
@@ -120,6 +125,9 @@ def get_recipe_details():
 def get_saved_recipe_details(recipe_id):
     """Show recipe details"""
 
+    logged_in_email = session.get("user_email")
+    user = User.get_by_email(logged_in_email)
+
     recipe = crud.get_recipe_by_id(recipe_id)
 
     return render_template("saved_recipe.html", recipe=recipe)
@@ -129,6 +137,8 @@ def get_saved_recipe_details(recipe_id):
 def save_recipe():
     """Add recipe to database"""
 
+    # add a check to see if recipe is already saved??
+
     logged_in_email = session.get("user_email")
     
     json = request.json
@@ -136,11 +146,10 @@ def save_recipe():
     ingredients = json['ingredients']
     instructions = json['instructions']
     image_path = json['image_path']
-    sourceUrl = json['sourceUrl']
 
     user = User.get_by_email(logged_in_email)
         
-    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, sourceUrl=sourceUrl)
+    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, user=user)
     
     db.session.add(recipe)
     db.session.commit()
@@ -153,7 +162,7 @@ def save_recipe():
     return "recipe saved"
 
 
-@app.route('/saved_recipes/<recipe_id>/ratings', methods=["POST"])
+@app.route('/saved_recipe/<recipe_id>/ratings', methods=["POST"])
 def create_rating(recipe_id):
     """Create a rating for a recipe"""
 
@@ -176,6 +185,7 @@ def create_rating(recipe_id):
     
     return redirect(f"/saved_recipe/{recipe_id}")
         
+
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)
