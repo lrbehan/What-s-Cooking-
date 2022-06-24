@@ -13,16 +13,24 @@ def create_user(email, password):
 
     return user
 
-def create_recipe(title, ingredients, instructions, image_path):
+def create_recipe(title, ingredients, instructions, image_path, sourceUrl):
     """Create and return a recipe"""
 
-    recipe = Recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path)
+    recipe = Recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, sourceUrl=sourceUrl)
 
     return recipe
     
 def get_recipe_by_id(recipe_id):
     """Return a recipe from database by recipe_id"""
     return Recipe.query.get(recipe_id)
+
+def create_rating(user, recipe, score):
+    """Create a rating"""
+
+    rating = Rating(user=user, recipe=recipe, score=score)
+
+    return rating
+    
 
   
 if __name__ == '__main__':

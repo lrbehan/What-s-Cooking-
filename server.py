@@ -136,10 +136,11 @@ def save_recipe():
     ingredients = json['ingredients']
     instructions = json['instructions']
     image_path = json['image_path']
+    sourceUrl = json['sourceUrl']
 
     user = User.get_by_email(logged_in_email)
         
-    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path)
+    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, sourceUrl=sourceUrl)
     
     db.session.add(recipe)
     db.session.commit()
@@ -151,6 +152,30 @@ def save_recipe():
 
     return "recipe saved"
 
+
+@app.route('/saved_recipes/<recipe_id>/ratings', methods=["POST"])
+def create_rating(recipe_id):
+    """Create a rating for a recipe"""
+
+    logged_in_email = session.get("user_email")
+    rating_score = request.form.get("rating")
+
+    if logged_in_email is None:
+        flash ("You must log in to rate a recipe")
+    elif not rating_score:
+        flash ("You did not select a rating")
+    else:
+        user = crud.get_user_by_email(logged_in_email)
+        recipe = crud.get_recipe_by_id(recipe_id)
+
+        rating = crud.create_rating(user, recipe, int(rating_score))
+        db.session.add(rating)
+        db.session.commit()
+
+        flash(f'You rated this recipe {rating_score} out of 5')
+    
+    return redirect(f"/saved_recipe/{recipe_id}")
+        
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)

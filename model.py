@@ -83,6 +83,7 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text)
     instructions = db.Column(db.Text)
     image_path = db.Column(db.String)
+    sourceUrl = db.Column(db.String)
     
     user = db.relationship("User", secondary="saved_recipes", backref="recipes")
     category = db.relationship("Category", secondary="recipe_category", backref="recipes")

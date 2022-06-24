@@ -19,6 +19,18 @@
     </a>
   </li>
     {% endfor %}
+  </p>
+  <ul>
+  {% for rating in user.ratings %}
+    <li>
+      {{ rating.recipe.title}}:
+      <span {{ rating.rating_id }}>
+        {{rating.score}}
+      </span>
+    </li>
+  {% endfor %}
+  </ul>
+
   </ul>
   </p>
 {% endblock %}
