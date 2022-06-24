@@ -7,15 +7,18 @@
   <p>
     <h2>Search for Recipes</h2>
     <form action="/search">
-      <p>
         Search <input type="text" name="query">
-      </p>
       <p>
         <input type="submit">
       </p>
-    </form>
-    
-  
- 
+    <ul>
+    {% for recipe in user.recipes %}
+  <li>
+    <a href="/saved_recipe/{{recipe.recipe_id}}">
+      {{recipe.title}}
+    </a>
+  </li>
+    {% endfor %}
+  </ul>
   </p>
 {% endblock %}

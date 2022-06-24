@@ -5,14 +5,12 @@ from pprint import pformat
 import os
 import requests
 
-
 app = Flask(__name__)
 app.secret_key = 'SECRETSECRETSECRET'
 
 # This configuration option makes the Flask interactive debugger
 # more useful (you should remove this line in production though)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
-
 
 
 @app.route('/')
@@ -63,23 +61,12 @@ def login_user():
         flash('New email, please create account')
         return redirect("/")
 
-
-@app.route('/logout')
-def logout_user():
-    """logs out user"""
-
-    session['current_user'] = None
-    session['current_email'] = None
-    flash("Logged out. Come back soon!") 
-    return redirect('/')
-
-
 @app.route('/user_home')
 def user_home():
     """Show the User's homepage after login"""
-    
-    return render_template('user_home.html')
-
+    logged_in_email = session.get("user_email")
+    user = User.get_by_email(logged_in_email)
+    return render_template('user_home.html', user=user)
 
 API_KEY = os.environ['SPOONACULAR_KEY']
 
@@ -95,7 +82,7 @@ HEADERS = {
 @app.route('/search')
 def find_recipes():
     """Search for recipes on Spoonacular"""
-
+    
     query = request.args.get('query', '')
     search_endpoint = '/complexSearch' #endpoint for search
 
@@ -118,7 +105,6 @@ def get_recipe_details():
     ingredients = recipe['extendedIngredients']
     
     data = recipe['analyzedInstructions']
-    print(data)
 
     steps = data[0]['steps']
     instructions = []
@@ -127,7 +113,16 @@ def get_recipe_details():
 
     return render_template('recipe_details.html', recipe=recipe, ingredients=ingredients, instructions=instructions)
     
-    #example of an information request https://api.spoonacular.com/recipes/716429/information?apiKey=a3085bb64b4848fca7cf983ebc290d04
+    #example of an information request https://api.spoonacular.com/recipes/716429/information?apiKey=a3085bb64b4848fca7cf983ebc290d04  
+
+
+@app.route('/saved_recipe/<recipe_id>')
+def get_saved_recipe_details(recipe_id):
+    """Show recipe details"""
+
+    recipe = crud.get_recipe_by_id(recipe_id)
+
+    return render_template("saved_recipe.html", recipe=recipe)
 
 
 @app.route('/save', methods=['POST'])
@@ -136,15 +131,15 @@ def save_recipe():
 
     logged_in_email = session.get("user_email")
     
-
     json = request.json
     title = json['title']
     ingredients = json['ingredients']
     instructions = json['instructions']
+    image_path = json['image_path']
 
     user = User.get_by_email(logged_in_email)
         
-    recipe = Recipe.create(title=title, ingredients=ingredients, instructions=instructions)
+    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path)
     
     db.session.add(recipe)
     db.session.commit()
@@ -155,27 +150,6 @@ def save_recipe():
     db.session.commit()
 
     return "recipe saved"
-
-@app.route("/recipe/<recipe_id>", methods=["POST"])
-def create_rating(recipe_id):
-    """Create a new rating for a recipe"""
-
-    rating_score = request.form.get("rating")
-
-    if not rating_score:
-        flash("Error: you didn't select a score for your rating.")
-    else:
-        user = User.get_by_email(logged_in_email)
-        recipe = Recipe.get_by_id(recipe_id)
-
-        rating = Rating.create(user, rating, int(rating_score))
-        db.session.add(rating)
-        db.session.commit()
-
-        flash(f"You rated this recipe {rating_score} out of 5.")
-
-    return redirect(f"/recipe/{recipe_id}")
-
 
 if __name__ == '__main__':
     connect_to_db(app)

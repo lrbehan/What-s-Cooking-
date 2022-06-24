@@ -82,8 +82,9 @@ class Recipe(db.Model):
     title = db.Column(db.String)
     ingredients = db.Column(db.Text)
     instructions = db.Column(db.Text)
-
-
+    image_path = db.Column(db.String)
+    
+    user = db.relationship("User", secondary="saved_recipes", backref="recipes")
     category = db.relationship("Category", secondary="recipe_category", backref="recipes")
 
     # ratings = a list of Rating objects
@@ -91,12 +92,6 @@ class Recipe(db.Model):
 
     def __repr__(self):
         return f'<Recipe recipe_id={self.recipe_id}, title={self.title}, ingredients={self.ingredients}, instructions={self.instructions}>'
-
-    @classmethod
-    def create(cls, title, ingredients, instructions):
-        """create a recipe"""
-
-        return cls(title=title, ingredients=ingredients, instructions=instructions)
 
     
 class SavedRecipe(db.Model):
@@ -114,7 +109,6 @@ class SavedRecipe(db.Model):
 
     recipe = db.relationship("Recipe", backref="saved_recipes")
     user = db.relationship("User", backref="saved_recipes")
-    
     
     @classmethod
     def create(cls, recipe_id, user_id):
