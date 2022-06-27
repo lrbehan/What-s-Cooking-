@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}User Home{% endblock %}
+{% block title %}My Cookbook{% endblock %}
 
 {% block body %}
-<h2>User Home Page</h2>
+<h1>My Cookbook</h1>
     
   <p>
     <h2>Search for Recipes</h2>
@@ -20,7 +20,13 @@
   </li>
     {% endfor %}
   </p>
-
+    <ul>
+      {% for i in range(ratings | length) %}
+      <li>
+        {{ratings[i].recipe.title}} You rated this recipe {{ratings[i].score}} out of 5
+      </li>
+      {% endfor %}
+    </ul>
   </ul>
   </p>
 {% endblock %}

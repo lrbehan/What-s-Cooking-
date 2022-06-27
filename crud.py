@@ -14,10 +14,10 @@ def create_user(email, password):
     return user
 
 
-def create_recipe(title, ingredients, instructions, image_path, user):
+def create_recipe(title, ingredients, instructions, image_path, source_url, user):
     """Create and return a recipe"""
 
-    recipe = Recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, user=user)
+    recipe = Recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url, user=user)
 
     return recipe
     
@@ -26,6 +26,7 @@ def get_recipe_by_id(recipe_id):
     """Return a recipe from database by recipe_id"""
     
     return Recipe.query.get(recipe_id)
+
 
 def get_all_recipes_for_user(user_id):
     """Return all recipes from db by user"""
@@ -47,6 +48,11 @@ def get_ratings_by_user(user):
     return Rating.query.filter_by(user_id=user).all()
 
 
+
+def get_rating_by_recipe_and_user(recipe_id, user_id):
+    """Get rating by user and recipe"""
+    
+    return Rating.query.filter_by(user_id=user, recipe_id=recipe_id).first()
 
   
 if __name__ == '__main__':
