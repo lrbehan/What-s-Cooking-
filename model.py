@@ -84,9 +84,7 @@ class Recipe(db.Model):
     instructions = db.Column(db.Text)
     image_path = db.Column(db.String)
     source_url = db.Column(db.String)
-    user_id = db.Column (db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     
-    user = db.relationship("User", backref="recipes")
     category = db.relationship("Category", secondary="recipe_category", backref="recipes")
 
     # ratings = a list of Rating objects

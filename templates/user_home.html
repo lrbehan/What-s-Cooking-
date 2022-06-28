@@ -12,21 +12,13 @@
         <input type="submit">
       </p>
     <ul>
-    {% for recipe in user.recipes %}
+    {% for saved_recipe in user.saved_recipes %}
   <li>
-    <a href="/saved_recipe/{{recipe.recipe_id}}">
-      {{recipe.title}}
+    <a href="/saved_recipe/{{saved_recipe.recipe.recipe_id}}">
+      {{saved_recipe.recipe.title}}
     </a>
   </li>
     {% endfor %}
   </p>
-    <ul>
-      {% for i in range(ratings | length) %}
-      <li>
-        {{ratings[i].recipe.title}} You rated this recipe {{ratings[i].score}} out of 5
-      </li>
-      {% endfor %}
-    </ul>
   </ul>
-  </p>
 {% endblock %}

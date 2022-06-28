@@ -69,9 +69,8 @@ def user_home():
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
     
-    recipes = crud.get_all_recipes_for_user(user.user_id)
+    recipes = crud.get_all_saved_recipes_for_user(user)
     
-
     return render_template('user_home.html', user=user, recipes=recipes)
 
 
@@ -85,6 +84,7 @@ HEADERS = {
 	"X-RapidAPI-Key": API_KEY,
 	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
 
+
 @app.route('/')
 def homepage():
     """Show homepage."""
@@ -97,6 +97,7 @@ def homepage():
     
     return render_template('homepage.html', recipe=recipe)
     
+
 @app.route('/search')
 def find_recipes():
     """Search for recipes on Spoonacular"""
@@ -115,18 +116,18 @@ def find_recipes():
 @app.route('/recipe')
 def get_recipe_details():
     """Show recipe details"""
+    logged_in_email = session.get("user_email")
+    user = User.get_by_email(logged_in_email)
 
     recipe_id = request.args['id']
 
     recipe = requests.request("GET", URL + (f"/{recipe_id}/information"), headers=HEADERS).json()
-    
     
     ext_ingredients = recipe['extendedIngredients']
     ingredients=[]
     for ingredient in ext_ingredients:
         ingredients.append(ingredient)
 
-    
     data = recipe['analyzedInstructions']
     if len(data) == 0:
         instructions = "instructions located at the Original Recipe Source"
@@ -136,8 +137,8 @@ def get_recipe_details():
         for step in steps:
             instructions.append(step['step'])
 
-    
-    return render_template('recipe_details.html', recipe=recipe, ingredients=ingredients, instructions=instructions)
+    saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
+    return render_template('recipe_details.html', user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids)
     
     #example of an information request https://api.spoonacular.com/recipes/716429/information?apiKey=a3085bb64b4848fca7cf983ebc290d04  
 
@@ -157,38 +158,47 @@ def get_saved_recipe_details(recipe_id):
 @app.route('/save', methods=['POST'])
 def save_recipe():
     """Add recipe to database"""
-
-    # add a check to see if recipe is already saved??
-
     logged_in_email = session.get("user_email")
+    user = User.get_by_email(logged_in_email)
     
     json = request.json
-    title = json['title']
-    ingredients = json['ingredients']
-    instructions = json['instructions']
-    image_path = json['image_path']
-    source_url = json['source_url']
+    source_url = json['source_url'] 
+    
+    recipe_exists = Recipe.query.filter(Recipe.source_url==source_url).first()
+    
+    if recipe_exists:
+        recipe = crud.get_recipe_by_source_url(source_url)
+        saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
+    
+        db.session.add(saved_recipe)
+        db.session.commit()
 
-    user = User.get_by_email(logged_in_email)
+        return "recipe saved"
+    else:
+        json = request.json
+        title = json['title']
+        ingredients = json['ingredients']
+        instructions = json['instructions']
+        image_path = json['image_path']
+        source_url = json['source_url']
         
-    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url, user=user)
+        recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)
     
-    db.session.add(recipe)
-    db.session.commit()
+        db.session.add(recipe)
+        db.session.commit()
 
-    saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
+        saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
     
-    db.session.add(saved_recipe)
-    db.session.commit()
+        db.session.add(saved_recipe)
+        db.session.commit()
 
-    return "recipe saved"
+        return "recipe saved"
 
 
 @app.route('/saved_recipe/<recipe_id>/ratings', methods=["POST"])
 def create_rating(recipe_id):
     """Create a rating for a recipe"""
 
-    
     logged_in_email = session.get("user_email")
     rating_score = request.form.get("rating")
 
@@ -200,7 +210,7 @@ def create_rating(recipe_id):
         user = crud.get_user_by_email(logged_in_email)
         recipe = crud.get_recipe_by_id(recipe_id)
 
-        rating = crud.create_rating(user, recipe, int(rating_score))
+        rating = crud.create_rating(user, recipe_id, int(rating_score))
         db.session.add(rating)
         db.session.commit()
 
