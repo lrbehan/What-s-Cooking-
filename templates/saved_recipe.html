@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{recipe.title}}{% endblock %}
+
+{% block body %}
+<h1 id='title'>{{ recipe.title }}</h1>
+
+<p>
+  <a href="{{ recipe.source_url}}">
+    {{recipe.source_url}}
+  </a>
+</p>
+
+</form>
+{% if session.get('user_email') %}
+<h2>Rate Recipe</h2>
+<form action="/saved_recipe/{{recipe.recipe_id}}/ratings" method="POST">
+  <p>
+    Rating:
+    <select name="rating" id="rating">
+      <option value="">Select rating</option>
+      {% for num in range(6) %}
+        <option value="{{ num }}">{{ num }}</option>
+      {% endfor %}
+    </select>
+  </p>
+  <p><input type="submit"></p>
+</form>
+{% endif %}
+
+<img src="{{ recipe.image_path }}" width="25%">
+
+<p>
+  {{ recipe.ingredients}}
+<p>
+  {{ recipe.instructions }}
+</p>
+
+{% endblock %}

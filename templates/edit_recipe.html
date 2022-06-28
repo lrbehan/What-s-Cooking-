@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Edit Recipe{% endblock %}
+
+{% block body %}
+<form id={{recipe_id}} action="/edit_recipe" method="post">
+    <input type="hidden" id='hidden_input' name='recipe_id' value={{recipe_id}}>
+    <p>
+        Recipe title <input type="text" name="title" placeholder={{original_recipe.title}} required>
+    </p>
+
+    <ul id='ingredients'>
+        {% for ingredient in ingredients %}
+        <li>
+        Ingredient <input id="new_ingr" type="text" placeholder={{original_recipe.ingredient}} required>
+
+        {% endfor %}
+        
+        <button id="addIng"> add </button>
+        </li>
+    </ul>
+    <p>
+        <button class="nextIngr"> Do you want to add another ingredient? </button>
+    </p>
+
+    <p>
+    </p>
+    <ul id='steps'>
+        {% for step in steps %}
+        <li>
+            Instructions: <input id="newInstr0" type="text" name="step" placeholder={original_recipe.instructions}} required>
+            <button class="addInstr" id="instrBttn0"> add </button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <p>
+    <button class="addStep"> Do you want to add another step? </button>
+    </p>
+
+    <p>
+    <button id="addRecipe" type="submit"> Add new recipe </button>
+    </p>
+
+</form>
+<script src='/static/js.js'></script>
+
+{% endblock %}
