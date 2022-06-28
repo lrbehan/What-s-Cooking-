@@ -3,6 +3,11 @@
 
 {% block body %}
   <h1>What's Cooking?</h1>
+   
+  <img src="{{recipe['image']}}" width="25%">
+  <p>
+  <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}</a>
+  </p>
   <h3>Create an Account</h3>
   <form action="/users" method="POST">
     <p>

@@ -13,13 +13,6 @@ app.secret_key = 'SECRETSECRETSECRET'
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 
-@app.route('/')
-def homepage():
-    """Show homepage."""
-
-    return render_template('homepage.html')
-
-
 @app.route('/users', methods=["POST"])
 def register_user():
     """create a new user"""
@@ -92,7 +85,18 @@ HEADERS = {
 	"X-RapidAPI-Key": API_KEY,
 	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
 
-
+@app.route('/')
+def homepage():
+    """Show homepage."""
+    
+    search_endpoint = '/random' #endpoint for random
+    payload = {"number":"1"}
+       
+    data = requests.request("GET", URL + search_endpoint, headers=HEADERS, params=payload).json()
+    recipe = data['recipes'][0] #format of endpoint is different
+    
+    return render_template('homepage.html', recipe=recipe)
+    
 @app.route('/search')
 def find_recipes():
     """Search for recipes on Spoonacular"""
