@@ -163,6 +163,7 @@ def save_recipe():
     """Add recipe to database"""
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
+    rating_score = request.json.get("rating")
     
     json = request.json
     source_url = json['source_url'] 
@@ -175,8 +176,6 @@ def save_recipe():
     
         db.session.add(saved_recipe)
         db.session.commit()
-
-        return "recipe saved"
     else:
         json = request.json
         title = json['title']
@@ -194,52 +193,16 @@ def save_recipe():
     
         db.session.add(saved_recipe)
         db.session.commit()
-
-        return "recipe saved"
-
-
-@app.route('/ratings', methods=["POST"])
-def create_rating():
-    """Create a rating for a saved recipe"""
-
-    logged_in_email = session.get("user_email")
-    rating_score = request.form.get("rating")
-    recipe_id = request.form.get("recipe_id")
-    source_url = request.form.get("source_url")
-
-    if logged_in_email is None:
-        flash ("You must log in to rate a recipe")
-    elif not rating_score:
-        flash ("You did not select a rating")
-    else:
-        if source_url:
-            recipe=crud.get_recipe_by_source_url(source_url)
-            if recipe:
-                recipe_id=recipe.recipe_id
-            else:
-                title = request.form.get("title")
-                ingredients = request.form.get("ingredients")
-                instructions = request.form.get("instructions")
-                image_path = request.form.get("image_path")
-                source_url = request.form.get("source_url")
-                recipe = crud.create_recipe(title, ingredients, instructions, image_path, source_url)
-                db.session.add(recipe)
-                db.session.commit()
-                recipe_id=recipe.recipe_id
-                
-            user = crud.get_user_by_email(logged_in_email)
+    if rating_score is not None:
+        rating = crud.create_rating(user, recipe.recipe_id, int(rating_score))
             
-            recipe = crud.get_recipe_by_id(recipe_id)
-
-            rating = crud.create_rating(user, recipe_id, int(rating_score))
-            
-            db.session.add(rating)
-            db.session.commit()
-
-        flash(f'You rated this recipe {rating_score} out of 5')
+        db.session.add(rating)
+        db.session.commit()
     
-    return redirect(f"/saved_recipe/{recipe_id}")
-        
+        return {
+            "success": True,
+                "status": f"You rated this recipe {rating_score} out of 5"}
+    return {"status": "saved"}
 
 if __name__ == '__main__':
     connect_to_db(app)

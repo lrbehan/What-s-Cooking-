@@ -17,7 +17,7 @@
     {% endif %}
 <p>
   <h2>Rate Recipe</h2>
-  <form action="/ratings" method="POST">
+  <form id= "rate" action="/ratings" method="POST">
     <input type="hidden" name="source_url" id="source" value="{{recipe['sourceUrl']}}">
     <p>
       Rating:
