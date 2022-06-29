@@ -12,20 +12,23 @@
 
 </form>
 {% if session.get('user_email') %}
-<h2>Rate Recipe</h2>
-<form action="/saved_recipe/{{recipe.recipe_id}}/ratings" method="POST">
-  <p>
-    Rating:
-    <select name="rating" id="rating">
-      <option value="">Select rating</option>
-      {% for num in range(6) %}
-        <option value="{{ num }}">{{ num }}</option>
-      {% endfor %}
+    {% if recipe.recipe_id not in rated_recipe_ids %}
+      <h2>Rate Recipe</h2>
+        <form action="/ratings" method="POST">
+          <input type="hidden" name="recipe_id" value={{recipe.recipe_id}}>
+       <p>
+        Rating:
+          <select name="rating" id="rating">
+          <option value="">Select rating</option>
+        {% for num in range(6) %}
+          <option value="{{ num }}">{{ num }}</option>
+        {% endfor %}
     </select>
   </p>
   <p><input type="submit"></p>
-</form>
-{% endif %}
+    </form>
+    {% endif %}
+  {% endif %}
 
 <img src="{{ recipe.image_path }}" width="25%">
 

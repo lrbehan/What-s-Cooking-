@@ -130,7 +130,7 @@ def get_recipe_details():
 
     data = recipe['analyzedInstructions']
     if len(data) == 0:
-        instructions = "instructions located at the Original Recipe Source"
+        instructions = print("instructions located at the Original Recipe Source")
     else:
         steps = data[0]['steps']
         instructions = []
@@ -151,8 +151,11 @@ def get_saved_recipe_details(recipe_id):
     user = User.get_by_email(logged_in_email)
 
     recipe = crud.get_recipe_by_id(recipe_id)
-
-    return render_template("saved_recipe.html", recipe=recipe)
+   
+    rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
+    print(rated_recipe_ids)
+    
+    return render_template("saved_recipe.html", recipe=recipe, rated_recipe_ids=rated_recipe_ids )
 
 
 @app.route('/save', methods=['POST'])
@@ -195,18 +198,28 @@ def save_recipe():
         return "recipe saved"
 
 
-@app.route('/saved_recipe/<recipe_id>/ratings', methods=["POST"])
-def create_rating(recipe_id):
-    """Create a rating for a recipe"""
+@app.route('/ratings', methods=["POST"])
+def create_rating():
+    """Create a rating for a saved recipe"""
 
     logged_in_email = session.get("user_email")
     rating_score = request.form.get("rating")
+    recipe_id = request.form.get("recipe_id")
+    source_url = request.form.get("source_url")
 
     if logged_in_email is None:
         flash ("You must log in to rate a recipe")
     elif not rating_score:
         flash ("You did not select a rating")
     else:
+        if source_url:
+            recipe=crud.get_recipe_by_source_url(source_url)
+            if recipe:
+                recipe_id=recipe.recipe_id
+            else:
+                #create the recipe
+                #commit
+                #reassign value for recipe_id
         user = crud.get_user_by_email(logged_in_email)
         recipe = crud.get_recipe_by_id(recipe_id)
 
