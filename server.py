@@ -217,15 +217,24 @@ def create_rating():
             if recipe:
                 recipe_id=recipe.recipe_id
             else:
-                #create the recipe
-                #commit
-                #reassign value for recipe_id
-        user = crud.get_user_by_email(logged_in_email)
-        recipe = crud.get_recipe_by_id(recipe_id)
+                title = request.form.get("title")
+                ingredients = request.form.get("ingredients")
+                instructions = request.form.get("instructions")
+                image_path = request.form.get("image_path")
+                source_url = request.form.get("source_url")
+                recipe = crud.create_recipe(title, ingredients, instructions, image_path, source_url)
+                db.session.add(recipe)
+                db.session.commit()
+                recipe_id=recipe.recipe_id
+                
+            user = crud.get_user_by_email(logged_in_email)
+            
+            recipe = crud.get_recipe_by_id(recipe_id)
 
-        rating = crud.create_rating(user, recipe_id, int(rating_score))
-        db.session.add(rating)
-        db.session.commit()
+            rating = crud.create_rating(user, recipe_id, int(rating_score))
+            
+            db.session.add(rating)
+            db.session.commit()
 
         flash(f'You rated this recipe {rating_score} out of 5')
     
