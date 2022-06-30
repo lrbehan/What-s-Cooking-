@@ -130,7 +130,7 @@ def get_recipe_details():
 
     data = recipe['analyzedInstructions']
     if len(data) == 0:
-        instructions = print("instructions located at the Original Recipe Source")
+        instructions = "instructions located at the Original Recipe Source"
     else:
         steps = data[0]['steps']
         instructions = []
@@ -151,11 +151,11 @@ def get_saved_recipe_details(recipe_id):
     user = User.get_by_email(logged_in_email)
 
     recipe = crud.get_recipe_by_id(recipe_id)
-   
-    rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
-    print(rated_recipe_ids)
     
-    return render_template("saved_recipe.html", recipe=recipe, rated_recipe_ids=rated_recipe_ids )
+    saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
+    rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
+    
+    return render_template("saved_recipe.html", recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids)
 
 
 @app.route('/save', methods=['POST'])
@@ -176,6 +176,7 @@ def save_recipe():
     
         db.session.add(saved_recipe)
         db.session.commit()
+    
     else:
         json = request.json
         title = json['title']
@@ -193,6 +194,7 @@ def save_recipe():
     
         db.session.add(saved_recipe)
         db.session.commit()
+    
     if rating_score is not None:
         rating = crud.create_rating(user, recipe.recipe_id, int(rating_score))
             
@@ -202,7 +204,21 @@ def save_recipe():
         return {
             "success": True,
                 "status": f"You rated this recipe {rating_score} out of 5"}
-    return {"status": "saved"}
+    return {"status": "saved"}  
+  
+
+# @app.route('/edit_recipe')
+# def display_edit_recipe_template():
+    
+#     original_recipe =
+    
+#     return render_template("edit_recipe.html", original_recipe=original_recipe)
+
+
+# @app.route('/edit_recipe', methods="POST")
+# def edit_recipe():
+    
+
 
 if __name__ == '__main__':
     connect_to_db(app)

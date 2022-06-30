@@ -3,15 +3,19 @@
 
 {% block body %}
 <h1 id='title'>{{ recipe.title }}</h1>
-
+<form>
 <p>
   <a href="{{ recipe.source_url}}">
     {{recipe.source_url}}
   </a>
 </p>
-
 </form>
 {% if session.get('user_email') %}
+    {% if recipe.recipe_id in saved_recipe_ids %}
+      This recipe is in your Cookbook. Would you like to edit it?
+      <a id="edit_recipe" href = "/edit_recipe">Edit</a>
+    {% endif %}
+
     {% if recipe.recipe_id not in rated_recipe_ids %}
       <h2>Rate Recipe</h2>
         <form action="/ratings" method="POST">
@@ -29,13 +33,13 @@
     </form>
     {% endif %}
   {% endif %}
-
+<p>
 <img src="{{ recipe.image_path }}" width="25%">
-
+</p>
 <p>
   {{ recipe.ingredients}}
 <p>
   {{ recipe.instructions }}
 </p>
-
+<script src="/static/js.js"></script>
 {% endblock %}
