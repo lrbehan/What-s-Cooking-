@@ -58,6 +58,11 @@ def get_ratings_by_user(user):
     return Rating.query.filter_by(user_id=user).all()
 
 
+def get_user_recipe_rating(user, recipe):
+    #please check logic 
+    return Rating.query.filter((Rating.user == user) & (Rating.recipe == recipe)).first()
+
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

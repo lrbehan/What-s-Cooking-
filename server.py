@@ -23,7 +23,7 @@ def register_user():
     user = crud.get_user_by_email(email)
     
     if user:
-        flash(f'Cannot create an account with that email')
+        flash('Cannot create an account with that email')
     else:
         user = crud.create_user(email, password)
 
@@ -119,6 +119,10 @@ def get_recipe_details():
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
 
+    if not user:
+        flash ("You must login")
+        return redirect("/")
+
     recipe_id = request.args['id']
 
     recipe = requests.request("GET", URL + (f"/{recipe_id}/information"), headers=HEADERS).json()
@@ -126,7 +130,7 @@ def get_recipe_details():
     ext_ingredients = recipe['extendedIngredients']
     ingredients=[]
     for ingredient in ext_ingredients:
-        ingredients.append(ingredient)
+        ingredients.append(ingredient['original'])
 
     data = recipe['analyzedInstructions']
     if len(data) == 0:
@@ -136,8 +140,10 @@ def get_recipe_details():
         instructions = []
         for step in steps:
             instructions.append(step['step'])
-
+    
+ 
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
+
     return render_template('recipe_details.html', user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids)
     
     #example of an information request https://api.spoonacular.com/recipes/716429/information?apiKey=a3085bb64b4848fca7cf983ebc290d04  
@@ -149,13 +155,15 @@ def get_saved_recipe_details(recipe_id):
 
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
-
+    
     recipe = crud.get_recipe_by_id(recipe_id)
+
+    rating = crud.get_user_recipe_rating(user, recipe)
     
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
     rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
     
-    return render_template("saved_recipe.html", recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids)
+    return render_template("saved_recipe.html", recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating)
 
 
 @app.route('/save', methods=['POST'])
@@ -171,11 +179,8 @@ def save_recipe():
     recipe_exists = Recipe.query.filter(Recipe.source_url==source_url).first()
     
     if recipe_exists:
+
         recipe = crud.get_recipe_by_source_url(source_url)
-        saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
-    
-        db.session.add(saved_recipe)
-        db.session.commit()
     
     else:
         json = request.json
@@ -190,21 +195,21 @@ def save_recipe():
         db.session.add(recipe)
         db.session.commit()
 
-        saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
-    
-        db.session.add(saved_recipe)
-        db.session.commit()
     
     if rating_score is not None:
         rating = crud.create_rating(user, recipe.recipe_id, int(rating_score))
             
         db.session.add(rating)
         db.session.commit()
-    
         return {
             "success": True,
-                "status": f"You rated this recipe {rating_score} out of 5"}
-    return {"status": "saved"}  
+            "status": f"You rated this recipe {rating_score} out of 5"}
+    else:
+        saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
+    
+        db.session.add(saved_recipe)
+        db.session.commit()
+        return {"status": "saved"}  
   
 
 # @app.route('/edit_recipe')

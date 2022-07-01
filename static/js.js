@@ -1,6 +1,5 @@
 
 function saveRecipe (rating) {
-    console.log(document.querySelector('#title').textContent)
     const inputs = {
 
         title: document.querySelector('#title').textContent,
@@ -10,7 +9,6 @@ function saveRecipe (rating) {
         source_url: document.querySelector('#source').value,
         rating: rating
     };
-    console.log(inputs)
     console.log(JSON.stringify(inputs))
     fetch('/save', {
         method: 'POST',
@@ -25,15 +23,16 @@ function saveRecipe (rating) {
     });
     }
 
-
+    document.querySelector('#rate').addEventListener('submit', (evt) => {
+        evt.preventDefault();
+        const score = document.querySelector("#rating").value;
+        saveRecipe(score);
+    });
+    
 document.querySelector('#save').addEventListener('click', (evt) => {
     evt.preventDefault();
-    saveRecipe()
-})
+    saveRecipe();
+});
 
 
-    document.querySelector('#rate').addEventListener('click', (evt) => {
-        evt.preventDefault();
-        const score = document.querySelector("#rating").value
-        saveRecipe(score)
-    })
+  

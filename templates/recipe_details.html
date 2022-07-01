@@ -10,15 +10,15 @@
     
   </a>
 </p>
-
 </form>
+
 {% if session.get('user_email') %}
     {% if recipe_id not in saved_recipe_ids %}
       <button id="save">Save Recipe</button>
     {% endif %}
 <p>
   <h2>Rate Recipe</h2>
-  <form id= "rate" action="/ratings" method="POST">
+  <form id= "rate" method="POST">
     <input type="hidden" name="source_url" id="source" value="{{recipe['sourceUrl']}}">
     <p>
       Rating:
@@ -33,16 +33,14 @@
   </form>
   {% endif %}
 
- 
-
   <img src="{{recipe['image']}}" width="25%">
-
   <input type="hidden" id="image" value="{{recipe['image']}}">
+  
   <div>    
     <ul id="ingredients">
       {% for ingredient in ingredients %}
         <li>
-        {{ ingredient['original'] }}
+        {{ ingredient }}
         </li>
         {% endfor %}
       </div>             
