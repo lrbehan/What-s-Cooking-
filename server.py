@@ -210,16 +210,8 @@ def save_recipe():
         return {"status": "saved"}  
   
 
-# @app.route('/edit_recipe')
-# def display_edit_recipe_template():
-    
-#     original_recipe =
-    
-#     return render_template("edit_recipe.html", original_recipe=original_recipe)
-
-
-# @app.route('/edit_recipe', methods="POST")
-# def edit_recipe():
+@app.route('/edit_recipe', methods="POST")
+def edit_recipe():
     
 
 

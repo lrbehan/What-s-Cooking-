@@ -46,6 +46,7 @@
   <input type="hidden" id="image" value="{{recipe['image']}}">
 </p>
 
+
 <div id="ingredients">
   {{ recipe.ingredients}}
 </div>
@@ -54,9 +55,26 @@
   {{ recipe.instructions }}
 </p>
 </div>
+<div id="edit_recipe"></div>
 
-
-
+<script>
+  const editBtn = document.querySelector("#edit");
+  displayedIngredients = document.querySelector('#ingredients')
+  displayedInstructions = document.querySelector('#instructions')
+  editBtn.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      displayedIngredients.hidden = "hidden"
+      displayedInstructions.hidden = "hidden"
+      editBtn.hidden = "hidden"
+      document.querySelector('#edit_recipe').insertAdjacentHTML('beforeend', `
+      <form id="edit_recipe_form" action="/edit_recipe" method="POST">
+      <textarea id="edit_ingredients"> {{recipe.ingredients}}</textarea>
+      <textarea id="edit_instructions"> {{recipe.instructions}}</textarea>
+      <button id="save_updated_recipe">Save Edited Recipe</button>
+      </form>
+      `)
+  })
+</script>
 <script src="/static/js.js"></script>
 <script src="/static/edit.js"></script>
 {% endblock %}
