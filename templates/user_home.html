@@ -3,22 +3,22 @@
 
 {% block body %}
 <h1>My Cookbook</h1>
-    
+
+<h2>Search for Recipes</h2>
+<form action="/search">
+  Search <input type="text" name="query">
   <p>
-    <h2>Search for Recipes</h2>
-    <form action="/search">
-        Search <input type="text" name="query">
-      <p>
-        <input type="submit">
-      </p>
-    <ul>
-    {% for saved_recipe in user.saved_recipes %}
-  <li>
-    <a href="/saved_recipe/{{saved_recipe.recipe.recipe_id}}">
-      {{saved_recipe.recipe.title}}
-    </a>
-  </li>
-    {% endfor %}
+    <input type="submit">
   </p>
-  </ul>
+</form>
+
+<ul>
+  {% for saved_recipe in user.saved_recipes %}
+    <li>
+      <a href="/saved_recipe/{{saved_recipe.recipe.recipe_id}}">
+        {{saved_recipe.recipe.title}}
+      </a>
+    </li>
+  {% endfor %}
+</ul>
 {% endblock %}

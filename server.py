@@ -134,7 +134,7 @@ def get_recipe_details():
 
     data = recipe['analyzedInstructions']
     if len(data) == 0:
-        instructions = "instructions located at the Original Recipe Source"
+        instructions = "Instructions located at original recipe source"
     else:
         steps = data[0]['steps']
         instructions = []
@@ -146,8 +146,6 @@ def get_recipe_details():
 
     return render_template('recipe_details.html', user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids)
     
-    #example of an information request https://api.spoonacular.com/recipes/716429/information?apiKey=a3085bb64b4848fca7cf983ebc290d04  
-
 
 @app.route('/saved_recipe/<recipe_id>')
 def get_saved_recipe_details(recipe_id):

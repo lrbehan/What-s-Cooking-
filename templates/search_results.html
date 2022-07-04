@@ -2,20 +2,17 @@
 {% block title %}Search Results{% endblock %}
 
 {% block body %}
-    <div id="search-results">
-      <h2>Recipe Search Results</h2>
-        <ul class="recipes-list">
-            {% for recipe in recipe_list %}
-              <li>
-                <img src="{{recipe['image']}}" width="10%" height="10%">
-                
-                <div>
-                  <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}
-                  </a>
-              </li>
-            {% endfor %}
-                </div>
-          </ul>
-        </div>
-     
+  <div id="search-results">
+    <h2>Recipe Search Results</h2>
+      <ul class="recipes-list">
+        {% for recipe in recipe_list %}
+          <li>
+            <img src="{{recipe['image']}}" width="10%" height="10%">
+
+            <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+  </div>
+
 {% endblock %}
