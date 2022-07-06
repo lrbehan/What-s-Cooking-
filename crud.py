@@ -20,7 +20,6 @@ def create_recipe(title, ingredients, instructions, image_path, source_url):
 
     return recipe
     
-
 def get_recipe_by_id(recipe_id):
     """Return a recipe from database by recipe_id"""
     
@@ -59,7 +58,6 @@ def get_ratings_by_user(user):
 
 
 def get_user_recipe_rating(user, recipe):
-    #please check logic 
     return Rating.query.filter((Rating.user == user) & (Rating.recipe == recipe)).first()
 
 

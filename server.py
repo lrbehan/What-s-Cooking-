@@ -208,12 +208,38 @@ def save_recipe():
         db.session.add(saved_recipe)
         db.session.commit()
         return {"status": "saved"}  
-  
 
-@app.route('/edit_recipe', methods="POST")
-def edit_recipe():
+
+
+
+@app.route('/edit_recipe', methods=["POST"])
+def save_updated_recipe():
+    logged_in_email = session.get("user_email")
+    user = User.get_by_email(logged_in_email)
+
+
+    title = request.form.get("title")
+    print(title)
+    ingredients = request.form.get("edit_ingredients")
+    instructions = request.form.get("edit_instructions")
+    image_path = request.form.get("image")
+    source_url = request.form.get("source")
+
+    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)
     
+    db.session.add(recipe)
+    db.session.commit()
 
+    #get the updated recipe_id
+
+    #add to favorite list
+    saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
+    db.session.add(saved_recipe)
+    db.session.commit()
+
+    return "saved" #update with redirect(f"/saved_recipe/{recipe_id}")
+
+    
 
 if __name__ == '__main__':
     connect_to_db(app)

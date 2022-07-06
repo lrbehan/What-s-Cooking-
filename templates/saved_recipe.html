@@ -16,13 +16,12 @@
 
 {% if session.get('user_email') %}
     {% if recipe.recipe_id in saved_recipe_ids %}
-      This recipe is in your Cookbook. Would you like to edit it?
-      <button id="edit">Edit Recipe</button>
-      
+      <div id="edit">This recipe is in your Cookbook. Would you like to edit it?
+        <button id="edit">Edit Recipe</button>
+      </div>
     {% endif %}
 <p>
     {% if recipe.recipe_id not in rated_recipe_ids %}
-        
       <h2>Rate Recipe</h2>
         <form id="rate" method="POST">
           <input type="hidden" name="recipe_id" value={{recipe.recipe_id}}>
@@ -43,7 +42,7 @@
 
 <p>
   <img src="{{ recipe.image_path }}" width="25%">
-  <input type="hidden" id="image" value="{{recipe['image']}}">
+  <input type="hidden" id="image" name="image" value="{{recipe['image']}}">
 </p>
 
 
@@ -57,24 +56,7 @@
 </div>
 <div id="edit_recipe"></div>
 
-<script>
-  const editBtn = document.querySelector("#edit");
-  displayedIngredients = document.querySelector('#ingredients')
-  displayedInstructions = document.querySelector('#instructions')
-  editBtn.addEventListener('click', (evt) => {
-      evt.preventDefault();
-      displayedIngredients.hidden = "hidden"
-      displayedInstructions.hidden = "hidden"
-      editBtn.hidden = "hidden"
-      document.querySelector('#edit_recipe').insertAdjacentHTML('beforeend', `
-      <form id="edit_recipe_form" action="/edit_recipe" method="POST">
-      <textarea id="edit_ingredients"> {{recipe.ingredients}}</textarea>
-      <textarea id="edit_instructions"> {{recipe.instructions}}</textarea>
-      <button id="save_updated_recipe">Save Edited Recipe</button>
-      </form>
-      `)
-  })
-</script>
+
 <script src="/static/js.js"></script>
 <script src="/static/edit.js"></script>
 {% endblock %}
