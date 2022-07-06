@@ -8,7 +8,7 @@
 {% endif %}
 <form>
 <p>
-  <a href="{{ recipe.source_url}}">
+  <a name="source" href="{{ recipe.source_url}}">
     {{recipe.source_url}}
   </a>
 </p>
@@ -25,7 +25,7 @@
       <h2>Rate Recipe</h2>
         <form id="rate" method="POST">
           <input type="hidden" name="recipe_id" value={{recipe.recipe_id}}>
-          <input type="hidden" name="source_url" id="source" value="{{recipe['sourceUrl']}}">
+          <input type="hidden" name="source_url" id="source_url" value="{{recipe.source_url}}">
             <p>
               Rating:
               <select name="rating" id="rating">
@@ -42,7 +42,7 @@
 
 <p>
   <img src="{{ recipe.image_path }}" width="25%">
-  <input type="hidden" id="image" name="image" value="{{recipe['image']}}">
+  <input type="hidden" id="image" name="image" value="{{recipe.image_path}}">
 </p>
 
 

@@ -144,7 +144,7 @@ def get_recipe_details():
  
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
 
-    return render_template('recipe_details.html', user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids)
+    return render_template('recipe_details.html', is_API=True, user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids)
     
 
 @app.route('/saved_recipe/<recipe_id>')
@@ -161,7 +161,7 @@ def get_saved_recipe_details(recipe_id):
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
     rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
     
-    return render_template("saved_recipe.html", recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating)
+    return render_template("saved_recipe.html", is_API=False, recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating)
 
 
 @app.route('/save', methods=['POST'])
@@ -210,8 +210,6 @@ def save_recipe():
         return {"status": "saved"}  
 
 
-
-
 @app.route('/edit_recipe', methods=["POST"])
 def save_updated_recipe():
     logged_in_email = session.get("user_email")
@@ -219,25 +217,28 @@ def save_updated_recipe():
 
 
     title = request.form.get("title")
-    print(title)
     ingredients = request.form.get("edit_ingredients")
     instructions = request.form.get("edit_instructions")
     image_path = request.form.get("image")
-    source_url = request.form.get("source")
+    source_url = request.form.get("source_url")
+    #get recipe ID
+    #removed saved_recipe
 
     recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)
     
     db.session.add(recipe)
     db.session.commit()
 
-    #get the updated recipe_id
-
     #add to favorite list
+
     saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
     db.session.add(saved_recipe)
     db.session.commit()
 
-    return "saved" #update with redirect(f"/saved_recipe/{recipe_id}")
+    recipe_id = saved_recipe.recipe_id
+    print(recipe_id)
+
+    return redirect (f"/saved_recipe/{recipe_id}")
 
     
 

@@ -9,7 +9,7 @@ function saveRecipe (rating) {
         source_url: document.querySelector('#source').value,
         rating: rating
     };
-    console.log(JSON.stringify(inputs))
+    // console.log(JSON.stringify(inputs))
     fetch('/save', {
         method: 'POST',
         body: JSON.stringify(inputs),
