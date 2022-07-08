@@ -124,8 +124,9 @@ def get_recipe_details():
         return redirect("/")
 
     recipe_id = request.args['id']
-
-    recipe = requests.request("GET", URL + (f"/{recipe_id}/information"), headers=HEADERS).json()
+    
+    #endpoint for details
+    recipe = requests.request("GET", URL + (f"/{recipe_id}/information"), headers=HEADERS).json() 
     
     ext_ingredients = recipe['extendedIngredients']
     ingredients=[]
@@ -175,10 +176,10 @@ def save_recipe():
     source_url = json['source_url'] 
     
     recipe_exists = Recipe.query.filter(Recipe.source_url==source_url).first()
-    
+   
     if recipe_exists:
 
-        recipe = crud.get_recipe_by_source_url(source_url)
+        recipe = crud.get_last_recipe_by_source_url(source_url)
     
     else:
         json = request.json
@@ -215,28 +216,28 @@ def save_updated_recipe():
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
 
-
     title = request.form.get("title")
     ingredients = request.form.get("edit_ingredients")
     instructions = request.form.get("edit_instructions")
     image_path = request.form.get("image")
     source_url = request.form.get("source_url")
-    #get recipe ID
-    #removed saved_recipe
-
-    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)
     
+    # remove original recipe from favorite list
+    recipe = crud.get_last_recipe_by_source_url(source_url)
+    recipe_id = recipe.recipe_id
+    crud.unsave_recipe(recipe_id)
+
+    # save the edited recipe
+    recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)
     db.session.add(recipe)
     db.session.commit()
 
-    #add to favorite list
-
+    # add to favorite list
     saved_recipe = SavedRecipe.create(recipe.recipe_id, user.user_id)
     db.session.add(saved_recipe)
     db.session.commit()
 
     recipe_id = saved_recipe.recipe_id
-    print(recipe_id)
 
     return redirect (f"/saved_recipe/{recipe_id}")
 

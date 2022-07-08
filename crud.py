@@ -1,9 +1,11 @@
 from model import db, User, Recipe, SavedRecipe, Rating, Comment, Category, connect_to_db
 
+
 def get_user_by_email(email):
     """Return a user by email."""
 
     return User.query.filter(User.email == email).first()
+
 
 def create_user(email, password):
     """Create and return a new user."""
@@ -37,6 +39,12 @@ def get_recipe_by_source_url(source_url):
 
     return Recipe.query.filter(Recipe.source_url==source_url).first()
 
+def get_last_recipe_by_source_url(source_url):
+    """Return the most recent edit of the recipe"""
+
+    return Recipe.query.filter(Recipe.source_url==source_url).order_by(Recipe.recipe_id.desc()).first()
+    
+
 
 def get_all_saved_recipes_for_user(user):
     """Return all saved_recipes from db by user"""
@@ -61,6 +69,12 @@ def get_ratings_by_user(user):
 def get_user_recipe_rating(user, recipe):
     return Rating.query.filter((Rating.user == user) & (Rating.recipe == recipe)).first()
 
+
+def unsave_recipe(recipe_id):
+    recipe = SavedRecipe.query.filter(SavedRecipe.recipe_id == recipe_id).first()
+    db.session.delete(recipe)
+    db.session.commit()
+    
 
 if __name__ == '__main__':
     from server import app

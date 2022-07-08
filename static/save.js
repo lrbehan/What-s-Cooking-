@@ -6,7 +6,7 @@ function saveRecipe (rating) {
         ingredients: document.querySelector('#ingredients').textContent,
         instructions: document.querySelector('#instructions').textContent,
         image_path: document.querySelector('#image').value,
-        source_url: document.querySelector('#source').value,
+        source_url: document.querySelector('#source_url').value,
         rating: rating
     };
     // console.log(JSON.stringify(inputs))

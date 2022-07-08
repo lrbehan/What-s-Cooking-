@@ -3,10 +3,12 @@
 
 {% block body %}
 <h1 id='title'>{{ recipe.title }}</h1>
+<input type="hidden" name="source_url" id="source_url" value="{{recipe.source_url}}">
 {% if recipe.recipe_id in rated_recipe_ids %}
   You rated this {{rating.score}} out of 5
 {% endif %}
 <form>
+  
 <p>
   <a name="source" href="{{ recipe.source_url}}">
     {{recipe.source_url}}
@@ -25,7 +27,6 @@
       <h2>Rate Recipe</h2>
         <form id="rate" method="POST">
           <input type="hidden" name="recipe_id" value={{recipe.recipe_id}}>
-          <input type="hidden" name="source_url" id="source_url" value="{{recipe.source_url}}">
             <p>
               Rating:
               <select name="rating" id="rating">
