@@ -146,7 +146,7 @@ def get_recipe_details():
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
     rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
 
-    return render_template('recipe_details.html', is_API=True, user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids, rated_recipe_ids=rated_recipe_ids)
+    return render_template('recipe.html', is_API=True, user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids, rated_recipe_ids=rated_recipe_ids)
     
 
 @app.route('/saved_recipe/<recipe_id>')
@@ -163,7 +163,7 @@ def get_saved_recipe_details(recipe_id):
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
     rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
     
-    return render_template("saved_recipe.html", is_API=False, recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating)
+    return render_template("recipe.html", is_API=False, recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating)
 
 
 @app.route('/save', methods=['POST'])
@@ -239,6 +239,11 @@ def save_updated_recipe():
     db.session.commit()
 
     recipe_id = saved_recipe.recipe_id
+    print()
+    print()
+    print(recipe_id)
+    print()
+    print()
 
     return redirect (f"/saved_recipe/{recipe_id}")
 
