@@ -144,8 +144,9 @@ def get_recipe_details():
     
  
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
+    rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
 
-    return render_template('recipe_details.html', is_API=True, user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids)
+    return render_template('recipe_details.html', is_API=True, user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids, rated_recipe_ids=rated_recipe_ids)
     
 
 @app.route('/saved_recipe/<recipe_id>')

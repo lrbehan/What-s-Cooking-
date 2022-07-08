@@ -16,6 +16,7 @@
     <h1 id="title">{{ recipe.title }}</h1>
     <p>
         <a href="{{ recipe.source_url}}">
+        <input type="hidden" name="source_url" id="source_url" value="{{recipe.source_url}}">   
           {{recipe.source_url}}
         </a>
     </p>
