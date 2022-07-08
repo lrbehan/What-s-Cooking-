@@ -5,6 +5,9 @@
 
 {% if is_API %}
     <h1 id="title"> {{ recipe['title'] }}</h1>
+    {% if recipe.recipe_id in rated_recipe_ids %}
+    You rated this {{rating.score}} out of 5
+    {% endif %}
     <form>
     <p>
     <a href="{{recipe['sourceUrl']}}">

@@ -45,7 +45,6 @@ def get_last_recipe_by_source_url(source_url):
     return Recipe.query.filter(Recipe.source_url==source_url).order_by(Recipe.recipe_id.desc()).first()
     
 
-
 def get_all_saved_recipes_for_user(user):
     """Return all saved_recipes from db by user"""
 
@@ -70,11 +69,21 @@ def get_user_recipe_rating(user, recipe):
     return Rating.query.filter((Rating.user == user) & (Rating.recipe == recipe)).first()
 
 
+def get_most_recent_recipe_rating(user, recipe):
+    return Rating.query.filter((Rating.user == user) & (Rating.recipe ==recipe)).order_by(Rating.recipe.recipe_id.desc()).first()
+
+
+def unsave_rating(recipe_id):
+    rating = Rating.query.filter(Rating.recipe_id == recipe_id).first()
+    db.session.delete(rating)
+    db.session.commit()
+
+
 def unsave_recipe(recipe_id):
     recipe = SavedRecipe.query.filter(SavedRecipe.recipe_id == recipe_id).first()
     db.session.delete(recipe)
     db.session.commit()
-    
+
 
 if __name__ == '__main__':
     from server import app

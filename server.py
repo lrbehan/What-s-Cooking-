@@ -71,7 +71,10 @@ def user_home():
     
     recipes = crud.get_all_saved_recipes_for_user(user)
     
-    return render_template('user_home.html', user=user, recipes=recipes)
+    ratings = crud.get_ratings_by_user(user.user_id)
+ 
+    
+    return render_template('user_home.html', user=user, recipes=recipes, ratings=ratings)
 
 
 API_KEY = os.environ['SPOONACULAR_KEY']
@@ -125,7 +128,7 @@ def get_recipe_details():
 
     recipe_id = request.args['id']
     
-    #endpoint for details
+    #endpoint for recipe details
     recipe = requests.request("GET", URL + (f"/{recipe_id}/information"), headers=HEADERS).json() 
     
     ext_ingredients = recipe['extendedIngredients']
@@ -227,6 +230,7 @@ def save_updated_recipe():
     recipe = crud.get_last_recipe_by_source_url(source_url)
     recipe_id = recipe.recipe_id
     crud.unsave_recipe(recipe_id)
+    crud.unsave_rating(recipe_id)
 
     # save the edited recipe
     recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)
@@ -239,11 +243,6 @@ def save_updated_recipe():
     db.session.commit()
 
     recipe_id = saved_recipe.recipe_id
-    print()
-    print()
-    print(recipe_id)
-    print()
-    print()
 
     return redirect (f"/saved_recipe/{recipe_id}")
 

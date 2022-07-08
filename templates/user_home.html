@@ -11,14 +11,38 @@
     <input type="submit">
   </p>
 </form>
-
-<ul>
-  {% for saved_recipe in user.saved_recipes %}
+<div>
+  <h2> Saved Recipes </h2>
+  <ul>
+    {% for saved_recipe in user.saved_recipes %}
     <li>
+      <img src="{{saved_recipe.recipe.image_path}}" width="10%">
       <a href="/saved_recipe/{{saved_recipe.recipe.recipe_id}}">
         {{saved_recipe.recipe.title}}
+        
+        <!-- {% for rating in saved_recipe.recipe.ratings %}
+        rating:
+        {{rating.score}}
+        {% endfor %} -->
+        
       </a>
     </li>
-  {% endfor %}
-</ul>
+    {% endfor %}
+  </ul>
+</div>
+
+<div>
+  <h2>Rated Recipes</h2>
+  <ul>
+    {% for rating in ratings %}
+    <li>
+      <img src="{{rating.recipe.image_path}}" width="10%">
+      <a href="/saved_recipe/{{rating.recipe.recipe_id}}">
+      {{rating.recipe.title}} |
+        Your Rating: {{rating.score}}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
 {% endblock %}
