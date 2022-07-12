@@ -68,13 +68,13 @@ def user_home():
     """Show the User's homepage after login"""
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
-    
+    diets = ["Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian", "Ovo-Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Whole30"]
     recipes = crud.get_all_saved_recipes_for_user(user)
     
     ratings = crud.get_ratings_by_user(user.user_id)
  
     
-    return render_template('user_home.html', user=user, recipes=recipes, ratings=ratings)
+    return render_template('user_home.html', user=user, recipes=recipes, ratings=ratings, diets=diets)
 
 
 API_KEY = os.environ['SPOONACULAR_KEY']
@@ -86,7 +86,6 @@ URL = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes'
 HEADERS = {
 	"X-RapidAPI-Key": API_KEY,
 	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
-
 
 @app.route('/')
 def homepage():
@@ -107,9 +106,9 @@ def find_recipes():
     
     query = request.args.get('query', '')
     search_endpoint = '/complexSearch' #endpoint for search
-
-    payload = {"ranking":"1", "query":request.args['query']} #get query from search page
-       
+    
+    payload = {"ranking":"1", "query":request.args['query'], "type":request.form.getlist('type')}
+    
     results = requests.request("GET", URL + search_endpoint, headers=HEADERS, params=payload).json()
     recipe_list = results['results'] 
 
@@ -135,6 +134,7 @@ def get_recipe_details():
     ingredients=[]
     for ingredient in ext_ingredients:
         ingredients.append(ingredient['original'])
+
 
     data = recipe['analyzedInstructions']
     if len(data) == 0:
@@ -165,8 +165,10 @@ def get_saved_recipe_details(recipe_id):
     
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
     rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
+    ingredients = recipe.ingredients.split("\n")
+    instructions = recipe.instructions.split("\n")
     
-    return render_template("recipe.html", is_API=False, recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating)
+    return render_template("recipe.html", is_API=False, recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating, ingredients=ingredients, instructions=instructions)
 
 
 @app.route('/save', methods=['POST'])
@@ -192,7 +194,8 @@ def save_recipe():
         instructions = json['instructions']
         image_path = json['image_path']
         source_url = json['source_url']
-        
+        print(ingredients)
+        print("******************")
         recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)
     
         db.session.add(recipe)
@@ -217,6 +220,7 @@ def save_recipe():
 
 @app.route('/edit_recipe', methods=["POST"])
 def save_updated_recipe():
+    
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
 
@@ -230,7 +234,9 @@ def save_updated_recipe():
     recipe = crud.get_last_recipe_by_source_url(source_url)
     recipe_id = recipe.recipe_id
     crud.unsave_recipe(recipe_id)
-    crud.unsave_rating(recipe_id)
+    rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
+    if recipe_id in rated_recipe_ids:
+        crud.unsave_rating(recipe_id)
 
     # save the edited recipe
     recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)

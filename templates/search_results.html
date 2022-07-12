@@ -1,18 +1,24 @@
 {% extends 'base.html' %}
+
 {% block title %}Search Results{% endblock %}
 
 {% block body %}
-  <div id="search-results">
-    <h2>Recipe Search Results</h2>
-      <ul class="recipes-list">
-        {% for recipe in recipe_list %}
-          <li>
-            <img src="{{recipe['image']}}" width="10%" height="10%">
-
-            <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+<div class="container">
+  <h2>Recipe Search Results</h2>
+  <div class="row" id="search-results">
+    <ul class="recipes-list">
+      {% for recipe in recipe_list %}
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+            <div class="card text-center bg-light">
+              <img src="{{recipe['image']}}" width="20%" height="20%">
+              <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}</a>
+            </div>
+          </div>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
   </div>
+</div>
 
 {% endblock %}

@@ -3,8 +3,8 @@ function saveRecipe (rating) {
     const inputs = {
 
         title: document.querySelector('#title').textContent,
-        ingredients: document.querySelector('#ingredients').textContent,
-        instructions: document.querySelector('#instructions').textContent,
+        ingredients: document.querySelector('#ingredients').innerText,
+        instructions: document.querySelector('#instructions').innerText,
         image_path: document.querySelector('#image').value,
         source_url: document.querySelector('#source_url').value,
         rating: rating

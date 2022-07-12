@@ -1,44 +1,49 @@
-{% extends 'base.html' %}
+
 {% block title %}What's Cooking? Home{% endblock %}
 
 {% block body %}
   <h1>What's Cooking?</h1>
-    
-  <img src="{{recipe['image']}}" width="25%">
-  
-  <p>
-    <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}</a>
+  <div class="container">
+    <img src="{{recipe['image']}}" width="25%">
+    <p>
+      <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}</a>
     </p>
-    <h3>Create an Account</h3>
-    <form action="/users" method="POST">
-      <p>
-        Email <input type="text" name="email">
-      </p>
+  </div>
 
-      <p>
-        Password <input type="password" name="password">
-      </p>
+  <div class="containter">
 
-      <p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-3">
+        <h3>Create an Account</h3>
+        <form action="/users" method="POST">
+          <p>
+            Email <input type="text" name="email">
+          </p>
+          <p>
+            Password <input type="password" name="password">
+          </p>
+          <p>
+            <input type="submit">
+          </p>
+        </form>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-3">
+        <h3>Log In</h3>
+        <form action="/login" method="POST">
+        <p>
+          Email <input type="text" name="email">
+        </p>
+        <p>
+          Password <input type="password" name="password">
+        </p>
+        <p>
         <input type="submit">
-      </p>
-    </form>
-
-  <h3>Log In</h3>
-  <form action="/login" method="POST">
-  
-  <p>
-    Email <input type="text" name="email">
-  </p>
-
-  <p>
-    Password <input type="password" name="password">
-  </p>
-
-  <p>
-  <input type="submit">
-  </p>
-
-  </form>
+        </p>
+        </form>
+      </div>  
+    </div>
+  </div>
   
 {% endblock %}

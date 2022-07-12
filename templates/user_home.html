@@ -1,48 +1,66 @@
 {% extends 'base.html' %}
+
 {% block title %}My Cookbook{% endblock %}
 
 {% block body %}
 <h1>My Cookbook</h1>
-
-<h2>Search for Recipes</h2>
-<form action="/search">
-  Search <input type="text" name="query">
-  <p>
-    <input type="submit">
-  </p>
-</form>
-<div>
-  <h2> Saved Recipes </h2>
-  <ul>
-    {% for saved_recipe in user.saved_recipes %}
-    <li>
-      <img src="{{saved_recipe.recipe.image_path}}" width="10%">
-      <a href="/saved_recipe/{{saved_recipe.recipe.recipe_id}}">
-        {{saved_recipe.recipe.title}}
-        
-        <!-- {% for rating in saved_recipe.recipe.ratings %}
-        rating:
-        {{rating.score}}
-        {% endfor %} -->
-        
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
+<div class="container">
+  <div class="row">
+    <h2>Search for Recipes</h2>
+    <form action="/search">
+      Search for New Recipes <input type="text" name="query">
+        <input type="submit">
+        <p>
+        Diet<br>
+        <span>(optional):</span><br>
+          <ul>
+          {% for diet in diets %}
+            <li class="search-checkbox"><input type="checkbox" name="diet" value="{{diet}}">{{ diet }}</li>
+          {% endfor %}
+          </ul><br>
+        </p>
+      </form>
+  </div>
 </div>
 
-<div>
-  <h2>Rated Recipes</h2>
-  <ul>
-    {% for rating in ratings %}
-    <li>
-      <img src="{{rating.recipe.image_path}}" width="10%">
-      <a href="/saved_recipe/{{rating.recipe.recipe_id}}">
-      {{rating.recipe.title}} |
-        Your Rating: {{rating.score}}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-3">
+      <h2> Saved Recipes </h2>
+      <ul>
+        {% for saved_recipe in user.saved_recipes %}
+        <li>
+          <img src="{{saved_recipe.recipe.image_path}}" width="20%">
+          <a href="/saved_recipe/{{saved_recipe.recipe.recipe_id}}">
+            {{saved_recipe.recipe.title}}
+            <!-- {% for rating in saved_recipe.recipe.ratings %}
+            rating:
+            {{rating.score}}
+            {% endfor %} -->
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-3">
+      <h2>Rated Recipes</h2>
+      <ul>
+        {% for rating in ratings %}
+        <li>
+          <img src="{{rating.recipe.image_path}}" width="20%">
+          <a href="/saved_recipe/{{rating.recipe.recipe_id}}">
+          {{rating.recipe.title}} |
+            Your Rating: {{rating.score}}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 </div>
 {% endblock %}

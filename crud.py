@@ -69,10 +69,6 @@ def get_user_recipe_rating(user, recipe):
     return Rating.query.filter((Rating.user == user) & (Rating.recipe == recipe)).first()
 
 
-def get_most_recent_recipe_rating(user, recipe):
-    return Rating.query.filter((Rating.user == user) & (Rating.recipe ==recipe)).order_by(Rating.recipe.recipe_id.desc()).first()
-
-
 def unsave_rating(recipe_id):
     rating = Rating.query.filter(Rating.recipe_id == recipe_id).first()
     db.session.delete(rating)

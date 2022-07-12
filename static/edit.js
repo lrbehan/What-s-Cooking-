@@ -6,8 +6,8 @@ displayedInstructions = document.querySelector('#instructions')
 editBtn.addEventListener('click', (evt) => {
     evt.preventDefault();
     
-    originalIngredients = document.querySelector('#ingredients').innerText;
-    originalInstructions = document.querySelector('#instructions').innerText;
+    originalIngredients = document.querySelector('#ingredients').textContent;
+    originalInstructions = document.querySelector('#instructions').textContent;
     title = document.querySelector('#title').textContent;
     source_url = document.querySelector('#source_url').value;
     image = document.querySelector('#image').value;
