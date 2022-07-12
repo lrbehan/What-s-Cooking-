@@ -58,7 +58,7 @@ def login_user():
 @app.route('/logout')
 def logout():
     """Logs out user."""
-    del session["user_id"]
+    del session["user_email"]
 
     return redirect("/")
 
@@ -233,10 +233,7 @@ def save_updated_recipe():
     title = request.form.get("title")
     ingredients = request.form.get("edit_ingredients")
     instructions = request.form.get("edit_instructions")
-   
-    ################fix the format of ingredient and instructions ###########
     
-
     image_path = request.form.get("image")
     source_url = request.form.get("source_url")
     
