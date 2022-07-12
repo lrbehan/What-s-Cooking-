@@ -1,7 +1,4 @@
 
-{% block title %}What's Cooking? Home{% endblock %}
-
-{% block body %}
   <h1>What's Cooking?</h1>
   <div class="container">
     <img src="{{recipe['image']}}" width="25%">
@@ -46,4 +43,9 @@
     </div>
   </div>
   
-{% endblock %}
+<!-- Show flashed messages-->
+{% for msg in get_flashed_messages() %}
+<div class="flash-msg">
+  {{ msg }}
+</div>
+{% endfor %}

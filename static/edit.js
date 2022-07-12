@@ -6,12 +6,12 @@ displayedInstructions = document.querySelector('#instructions')
 editBtn.addEventListener('click', (evt) => {
     evt.preventDefault();
     
-    originalIngredients = document.querySelector('#ingredients').textContent;
-    originalInstructions = document.querySelector('#instructions').textContent;
+    originalIngredients = document.querySelector('#ingredients').innerText;
+    originalInstructions = document.querySelector('#instructions').innterText;
     title = document.querySelector('#title').textContent;
     source_url = document.querySelector('#source_url').value;
     image = document.querySelector('#image').value;
-    
+
     displayedIngredients.hidden = "hidden";
     displayedInstructions.hidden = "hidden";
     editBtn.hidden = "hidden";
