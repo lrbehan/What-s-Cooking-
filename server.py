@@ -130,11 +130,14 @@ def get_recipe_details():
     #endpoint for recipe details
     recipe = requests.request("GET", URL + (f"/{recipe_id}/information"), headers=HEADERS).json() 
     
+    title = recipe['title']
+    source_url = recipe['sourceUrl']
+    image = recipe['image']
+
     ext_ingredients = recipe['extendedIngredients']
     ingredients=[]
     for ingredient in ext_ingredients:
         ingredients.append(ingredient['original'])
-
 
     data = recipe['analyzedInstructions']
     if len(data) == 0:
@@ -144,12 +147,11 @@ def get_recipe_details():
         instructions = []
         for step in steps:
             instructions.append(step['step'])
-    
  
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
     rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
 
-    return render_template('recipe.html', is_API=True, user=user, recipe=recipe, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids, rated_recipe_ids=rated_recipe_ids)
+    return render_template('recipe.html', is_API=True, user=user, recipe=recipe, title=title, source_url=source_url, image=image, ingredients=ingredients, instructions=instructions, saved_recipe_ids=saved_recipe_ids, rated_recipe_ids=rated_recipe_ids)
     
 
 @app.route('/saved_recipe/<recipe_id>')
@@ -165,10 +167,15 @@ def get_saved_recipe_details(recipe_id):
     
     saved_recipe_ids = [ recipe.recipe_id for recipe in user.saved_recipes ]
     rated_recipe_ids = [ recipe.recipe_id for recipe in user.ratings ]
+
+    title = recipe.title
+    source_url = recipe.source_url
+    image = recipe.image_path
+
     ingredients = recipe.ingredients.split("\n")
     instructions = recipe.instructions.split("\n")
     
-    return render_template("recipe.html", is_API=False, recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating, ingredients=ingredients, instructions=instructions)
+    return render_template("recipe.html", is_API=False, recipe=recipe, rated_recipe_ids=rated_recipe_ids, saved_recipe_ids=saved_recipe_ids, rating=rating, title=title, source_url=source_url, image=image, ingredients=ingredients, instructions=instructions)
 
 
 @app.route('/save', methods=['POST'])
@@ -194,8 +201,7 @@ def save_recipe():
         instructions = json['instructions']
         image_path = json['image_path']
         source_url = json['source_url']
-        print(ingredients)
-        print("******************")
+       
         recipe = crud.create_recipe(title=title, ingredients=ingredients, instructions=instructions, image_path=image_path, source_url=source_url)
     
         db.session.add(recipe)

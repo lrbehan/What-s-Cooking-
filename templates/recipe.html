@@ -3,142 +3,83 @@
 {% block title %} Recipe Details {% endblock %}
 
 {% block body %}
-{% if is_API %}
-    <h1 id="title"> {{ recipe['title'] }}</h1>
-    
-    {% if recipe.recipe_id in rated_recipe_ids %}
-    You rated this {{rating.score}} out of 5
-    {% endif %}
-    
-    <form>
-    <p>
-    <a href="{{recipe['sourceUrl']}}">
-        {{recipe['sourceUrl']}}</a>
-    </p>
-    </form>
+<h1 id="title"> {{ title }}</h1>
 
-    {% if session.get('user_email') %}
-        {% if recipe_id not in saved_recipe_ids %}
+{% if recipe.recipe_id in rated_recipe_ids %}
+    You rated this {{rating.score}} out of 5
+{% endif %}
+
+<form>
+    <a href="source_url">
+        {{ source_url}}
+    <input type="hidden" name="source_url" id="source_url" value="{{ source_url }}">
+    </a>
+</form>
+
+{% if session.get('user_email') %}
+    {% if is_API %}
         <button id="save">Save Recipe</button>
-        {% endif %}
-    
+    {% endif %}
+
+    {% if not is_API %}
+    <div id="edit">This recipe is in your Cookbook. Would you like to edit it?
+        <button id="edit">Edit Recipe</button>
+    </div>
+    {% endif %}
+
     <div class="container">
         <div class="row">
             <p>
-            <h2>Rate Recipe</h2>
-            <form id= "rate" method="POST">
-                <input type="hidden" name="source_url" id="source" value="{{recipe['sourceUrl']}}">
-                <p>
-                Rating:
-                <select name="rating" id="rating">
-                    <option value="">Select rating</option>
-                    {% for num in range(6) %}
-                    <option value="{{ num }}">{{ num }}</option>
-                    {% endfor %}
-                </select>
-                </p>
-                <p><input type="submit"></p>
-            </form>
-            {% endif %}
-        </div>
-    </div>
-
-    <img src="{{recipe['image']}}" width="25%">
-    <input type="hidden" id="image" value="{{recipe['image']}}">
-    
-    <div class="container">
-        <div class="row">  
-            <ul id="ingredients">
-            {% for ingredient in ingredients %}
-                <li>
-                {{ ingredient }}
-                </li>
-                {% endfor %}
-        </div>   
-    </div>   
-
-    <div class="container">
-        <div class="row">        
-            <p>
-            <ul id="instructions">
-                {% for instruction in instructions %}            
-                    <li>
-                        {{ instruction }}
-                    </li>
-                        {% endfor %}
-                </ul>
-                <input type="hidden" name="source_url" id="source_url" value="{{recipe['sourceUrl']}}">
-            </p>
-        </div>
-    </div>        
-{% endif %}
-
-{% if not is_API %}
-    <h1 id='title'>{{ recipe.title }}</h1>
-    <input type="hidden" name="source_url" id="source_url" value="{{recipe.source_url}}">
-    {% if recipe.recipe_id in rated_recipe_ids %}
-    You rated this {{rating.score}} out of 5
-    {% endif %}
-    <form>
-        <p>
-        <a name="source" href="{{ recipe.source_url}}">
-            {{recipe.source_url}}</a>
-        </p>
-    </form>
-
-    {% if session.get('user_email') %}
-        {% if recipe.recipe_id in saved_recipe_ids %}
-        <div id="edit">This recipe is in your Cookbook. Would you like to edit it?
-            <button id="edit">Edit Recipe</button>
-        </div>
-        {% endif %}
-        <div class="container">
-            <div class="row">  
-                <p>
                 {% if recipe.recipe_id not in rated_recipe_ids %}
-                <h2>Rate Recipe</h2>
+                    <h3>Rate Recipe</h3>
                     <form id="rate" method="POST">
-                    <input type="hidden" name="recipe_id" value={{recipe.recipe_id}}>
                         <p>
                         Rating:
                         <select name="rating" id="rating">
                         <option value="">Select rating</option>
                             {% for num in range(6) %}
-                            <option value="{{ num }}">{{ num }}</option>
-                    {% endfor %}
-                    </select>
-                </p>
-                <p><input type="submit"></p>
-                </form>
-            </div>
+                                <option value="{{ num }}">{{ num }}</option>
+                            {% endfor %}
+                        </select>
+                        </p>
+                        <p><input type="submit"></p>
+                    </form>
+                {% endif %}
+            </p>
         </div>
-        {% endif %}
-    {% endif %}
-    <div class="container">
-        <div class="row">        
-            <p>
-            <img src="{{ recipe.image_path }}" width="25%">
-            <input type="hidden" id="image" name="image" value="{{recipe.image_path}}">
-           </p> 
-           <ul id="ingredients">
-            {% for ingredient in ingredients %}            
-            <li>
-                {{ ingredient }}
-            </li>
-                {% endfor %}
-            </ul>
+    </div>
+{% endif %}
 
-            <ul id="instructions">
-                {% for instruction in instructions %}            
-            <li>
-                {{ instruction }}
-            </li>
+    <img src="{{image}}" width="25%">
+    <input type="hidden" id="image" value="{{ image }}">
+
+    <div class="container">
+        <div class="row">
+            <ul id="ingredients">
+                {% for ingredient in ingredients %}
+                <li>
+                    {{ ingredient }}
+                </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-    <div id="edit_recipe"></div>
-{% endif %}
+
+    <div class="container">
+        <div class="row">
+            <p>
+            <ul id="instructions">
+                {% for instruction in instructions %}
+                <li>
+                    {{ instruction }}
+                </li>
+                {% endfor %}
+            </ul>
+            </p>
+        </div>
+    </div>
+
+<div id="edit_recipe"></div>
 
 <script src="/static/save.js"></script>
 <script src="/static/edit.js"></script>
