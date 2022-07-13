@@ -1,66 +1,55 @@
   
-  <head>
-    <link rel="stylesheet" href="/static/stylesheet.css">
-    <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
-    <div class="logo-container">
-    <h1 class="logo">What's Cooking?</h1>
-    </div>
+<head>
+  <link rel="stylesheet" href="/static/stylesheet.css">
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+  
+</head>
 
-    </head>
-
-
-    <div class="random">
-    <img src="{{recipe['image']}}" class="random-img">
-    <p>
-      <a href="/recipe?id={{ recipe['id'] }}" class="link">{{ recipe['title'] }}</a>
-    </p>
+<body class="home">
+  
+  <div class="login">
+    <form action="/login" method="POST">
+      <p class="email">
+        &nbsp; Login: &nbsp;
+        Email <input type="text" name="email">
+        Password <input type="password" name="password">
+        <input class="button" type="submit">
+      </p>
+    </form>
   </div>
-  
-
-  <body class="home">
-  <div class="background"></div>
-  
-  
-  <div class="containter">
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-3">
-        <h3>Create an Account</h3>
-        <form action="/users" method="POST">
-          <p>
-            Email <input type="text" name="email">
-          </p>
-          <p>
-            Password <input type="password" name="password">
-          </p>
-          <p>
-            <input type="submit">
-          </p>
-        </form>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-3">
-        <h3>Log In</h3>
-        <form action="/login" method="POST">
-          <p>
-            Email <input type="text" name="email">
-          </p>
-          <p>
-            Password <input type="password" name="password">
-          </p>
-          <p>
-          <input type="submit">
-          </p>
-        </form>
-      </div>  
-    </div>
-  </div>
-  
-<!-- Show flashed messages-->
+  <!-- Show flashed messages-->
 {% for msg in get_flashed_messages() %}
 <div class="flash-msg">
   {{ msg }}
 </div>
 {% endfor %}
+    <div class="logo-container">
+      <h1 class="logo">What's Cooking?</h1>
+      </div>
+
+    <div class="random">
+    <img src="{{recipe['image']}}" class="random-img">
+      <p class="title">
+        <a href="/recipe?id={{ recipe['id'] }}" class="link">{{ recipe['title'] }}</a>
+      </p>
+    </div>
+  
+ 
+<div class="account-container">
+  <div class="account">
+    <h3>Create an Account</h3>
+    <form action="/users" method="POST">
+      <p>
+        Email <input type="text" name="email">
+      </p>
+      <p>
+        Password <input type="password" name="password">
+      </p>
+      <p>
+        <input type="submit">
+      </p>
+    </form>
+  </div>
+</div>   
 
 </body>
