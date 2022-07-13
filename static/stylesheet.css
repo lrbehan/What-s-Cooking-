@@ -1,0 +1,52 @@
+.logo-container {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    font-size: xx-large;
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+.logo {
+    font-family: Satisfy;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.navbar-brand {
+    font-family: 'Satisfy', cursive;
+}
+
+.home {
+    background: url('/static/images/nordwood-themes.jpg');
+    background-size: cover;
+    text-align: center;
+}
+
+.link {
+    background-color: rgb(38, 70, 83);
+    border: 2px solid rgb(38, 70, 83);
+    border-radius: 25px;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 30px;
+    cursor: pointer;
+    text-decoration:none;
+}
+
+.random {
+    margin:auto;
+    width: 50%;
+    text-align: center;
+}
+
+.random-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border:2px solid rgb(38,70,83)
+}

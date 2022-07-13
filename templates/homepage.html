@@ -1,14 +1,27 @@
+  
+  <head>
+    <link rel="stylesheet" href="/static/stylesheet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+    <div class="logo-container">
+    <h1 class="logo">What's Cooking?</h1>
+    </div>
 
-  <h1>What's Cooking?</h1>
-  <div class="container">
-    <img src="{{recipe['image']}}" width="25%">
+    </head>
+
+
+    <div class="random">
+    <img src="{{recipe['image']}}" class="random-img">
     <p>
-      <a href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}</a>
+      <a href="/recipe?id={{ recipe['id'] }}" class="link">{{ recipe['title'] }}</a>
     </p>
   </div>
+  
 
+  <body class="home">
+  <div class="background"></div>
+  
+  
   <div class="containter">
-
     <div class="row">
       <div class="col-12 col-md-6 col-lg-3">
         <h3>Create an Account</h3>
@@ -49,3 +62,5 @@
   {{ msg }}
 </div>
 {% endfor %}
+
+</body>

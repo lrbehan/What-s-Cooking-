@@ -1,4 +1,4 @@
-from model import db, User, Recipe, SavedRecipe, Rating, Comment, Category, connect_to_db
+from model import db, User, Recipe, SavedRecipe, Rating, Comment, connect_to_db
 
 
 def get_user_by_email(email):

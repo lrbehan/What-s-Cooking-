@@ -84,8 +84,6 @@ class Recipe(db.Model):
     instructions = db.Column(db.Text)
     image_path = db.Column(db.String)
     source_url = db.Column(db.String)
-    
-    category = db.relationship("Category", secondary="recipe_category", backref="recipes")
 
     # ratings = a list of Rating objects
     # comments = a list of Comment objects
@@ -115,32 +113,6 @@ class SavedRecipe(db.Model):
         """create a recipe"""
 
         return cls(recipe_id=recipe_id, user_id=user_id)
-
-
-class Category(db.Model):
-    """A recipe category"""
-
-    __tablename__ = "categories"
-
-    category_id = db.Column(db.Integer,
-                            autoincrement=True,
-                            primary_key=True)
-    category = db.Column(db.String) 
-    
-    #recipes = a list of Recipe objects
-
-
-class RecipeCategory(db.Model):
-    """Category of a specific recipe"""
-
-    __tablename__ = "recipe_category"
-
-    recipe_category_id = db.Column(db.Integer,
-                            autoincrement=True,
-                            primary_key=True)
-    recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.recipe_id"), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.category_id"), nullable=False)
-
 
 
 def connect_to_db(flask_app, db_uri="postgresql:///recipes", echo=True):

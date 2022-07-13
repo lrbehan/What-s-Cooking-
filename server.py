@@ -68,13 +68,11 @@ def user_home():
     """Show the User's homepage after login"""
     logged_in_email = session.get("user_email")
     user = User.get_by_email(logged_in_email)
-    diets = ["Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian", "Ovo-Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Whole30"]
+    
     recipes = crud.get_all_saved_recipes_for_user(user)
-    
     ratings = crud.get_ratings_by_user(user.user_id)
- 
     
-    return render_template('user_home.html', user=user, recipes=recipes, ratings=ratings, diets=diets)
+    return render_template('user_home.html', user=user, recipes=recipes, ratings=ratings)
 
 
 API_KEY = os.environ['SPOONACULAR_KEY']
@@ -107,7 +105,7 @@ def find_recipes():
     query = request.args.get('query', '')
     search_endpoint = '/complexSearch' #endpoint for search
     
-    payload = {"ranking":"1", "query":request.args['query'], "type":request.form.getlist('type')}
+    payload = {"ranking":"1", 'instructionsRequired': True, "query":request.args['query']}
     
     results = requests.request("GET", URL + search_endpoint, headers=HEADERS, params=payload).json()
     recipe_list = results['results'] 
