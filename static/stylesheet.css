@@ -179,3 +179,8 @@
 .rate {
     margin-left: 60px
 }
+
+.recipe-list {
+    margin: auto;
+    width: 80%
+}

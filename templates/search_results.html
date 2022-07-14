@@ -5,17 +5,19 @@
 {% block body %}
 <div class="container">
   <h2 class="header">Recipe Search Results</h2>
-  <div class="row" id="search-results" style="margin:auto; width: 40%">
-    <ul class="recipes-list">
-      {% for recipe in recipe_list %}
-        <div class="col-lg-12">
+    <div class="row" id="search-results">
+      <div class="col-lg-12">
+        <ul class="recipe-list">
+          {% for recipe in recipe_list %}
           <div class="card text-center">
             <img src="{{recipe['image']}}">
+            <p>
             <a class="link" href="/recipe?id={{ recipe['id'] }}">{{ recipe['title'] }}</a>
+            </p>
           </div>
-        </div>
-      {% endfor %}
-    </ul>
+          {% endfor %}
+        </ul>
+    </div>
   </div>
 </div>
 {% endblock %}
