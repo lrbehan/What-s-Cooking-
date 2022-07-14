@@ -23,17 +23,22 @@
     background-size: cover;
 }
 
+.search {
+    background: url('/static/images/nordwood-themes2.jpg');
+    background-size: cover;
+}
+
 .link {
-    background-color: rgb(38, 70, 83);
-    border: 2px solid rgb(38, 70, 83);
+    background-color: #1E4653;
+    border: 2px solid #1E4653;
     border-radius: 25px;
     color: whitesmoke;
     padding: 5px 10px;
     text-align: center;
     display: inline-block;
-    font-family: sans-serif;
+    font-family: Albert Sans;
     font-size: 16px;
-    margin: 10px 30px;
+    margin: 10px 10px;
     cursor: pointer;
     text-decoration:none;
 }
@@ -49,12 +54,12 @@
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-    border:2px solid rgb(38, 70, 83)
+    border:2px solid #1E4653
 }
 
 .account-container {
     color: whitesmoke;
-    font-family: sans-serif;
+    font-family: Albert Sans;
     width: 25%;
     margin: auto;
     text-align: center;
@@ -62,7 +67,7 @@
 
 .account {
     background-color: rgba(38, 70, 83, 0.6);
-    border:10px solid rgb(38, 70, 83, 0.6)
+    border:10px solid rgba(38, 70, 83, 0.6)
 }
 
 .title {
@@ -70,14 +75,15 @@
 }
 
 .login {
-    font-family: sans-serif;
+    font-family: Albert Sans;
     color: whitesmoke;
-    background-color: rgb(38, 70, 83);
+    background-color: #1E4653
 }
 
-.button {
-    background-color: rgb(38, 70, 83);
+.login-button {
+    background-color: #1E4653;
     border: none;
+    font-size: 16;
     color: white;
     text-align: center;
     text-decoration: none;
@@ -85,8 +91,91 @@
     padding: 8px
 }
 
+.button {
+    background-color: #1E4653;
+    border: solid #1E4653;
+    border-radius: 25px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    padding: 2px
+    }
+
+.rate-button {
+    background-color: #1E4653;
+    border: solid #1E4653;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    padding: 2px
+}
+
 .flash-msg {
     font-weight: bolder;
-    font-family: sans-serif;
-    color: red
+    font-size: large;
+    font-family: Albert Sans;
+    text-align: center;
+    color: rgb(181, 0, 0)
+}
+
+.card-cookbook {
+    text-align: center;
+    border-radius: 3px;
+    border: 3px solid #1E4653;
+    margin: 2em;
+    padding: 1em;
+    padding-top: 3em;
+    display: inline-block;
+  }
+
+  .card {
+    border-radius: 3px;
+    border: 3px solid #1E4653;
+    margin: 2em;
+    padding: 1em;
+    display: inline-block;
+  }
+.header {
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.rating {
+    text-align: center;
+    font-style: italic ;
+    font-size: medium;
+    padding-bottom: 20px;
+    padding-top: 20px
+}
+
+.recipe-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    width: 40%; 
+    border: solid black
+}
+
+.recipe-contents {
+    margin:auto;
+    width: 80%
+}
+
+.edit {
+    margin:auto;
+    width: 80%
+}
+
+.save {
+    margin: auto;
+    width: 10%
+}
+
+.rate {
+    margin-left: 60px
 }

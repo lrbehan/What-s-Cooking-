@@ -3,54 +3,59 @@
 {% block title %} Recipe Details {% endblock %}
 
 {% block body %}
-<h1 id="title"> {{ title }}</h1>
-
-{% if recipe.recipe_id in rated_recipe_ids %}
-    You rated this {{rating.score}} out of 5
-{% endif %}
-
-<form>
-    <a href="source_url">
-        {{ source_url}}
+<form style="text-align:right; margin-right: 60px; margin-top: 10px">
+    Source: <a href="{{source_url}}">
+    Link to original source
     <input type="hidden" name="source_url" id="source_url" value="{{ source_url }}">
     </a>
 </form>
 
+<h1 class="header", id="title"> {{ title }}</h1>
+<div class="container" style="border: solid #1E4653">
+<div class="rating">
+{% if recipe.recipe_id in rated_recipe_ids %}
+    You rated this {{rating.score}} out of 5
+{% endif %}
+</div>
+
 {% if session.get('user_email') %}
-    {% if is_API %}
-        <button id="save">Save Recipe</button>
-    {% endif %}
+
+    <div class="save" >
+        {% if is_API %}
+            <button class="button" id="save";>Save This Recipe</button>
+        {% endif %}
+    </div>
 
     {% if not is_API %}
-    <div id="edit">This recipe is in your Cookbook. Would you like to edit it?
-        <button id="edit">Edit Recipe</button>
+    <div class= "edit" id="edit">This recipe is in your Cookbook. Would you like to edit it?
+        <button class="button" id="edit">Edit Recipe</button>
     </div>
     {% endif %}
 
-    <div class="container">
-        <div class="row">
+    
+        <div class="row" style="text-align: center">
             <p>
                 {% if recipe.recipe_id not in rated_recipe_ids %}
-                    <h3>Rate Recipe</h3>
                     <form id="rate" method="POST">
-                        <p>
-                        Rating:
+                        <p font-size: large>
+                        Rate Recipe:  
                         <select name="rating" id="rating">
                         <option value="">Select rating</option>
                             {% for num in range(6) %}
                                 <option value="{{ num }}">{{ num }}</option>
                             {% endfor %}
                         </select>
+                        <input class="rate-button" type="submit">
                         </p>
-                        <p><input type="submit"></p>
                     </form>
                 {% endif %}
             </p>
         </div>
-    </div>
+  
 {% endif %}
 
-    <img src="{{image}}" width="25%">
+<div class="recipe-contents">
+    <img class="recipe-img" src="{{image}}" width="50%">
     <input type="hidden" id="image" value="{{ image }}">
 
     <div class="container">
@@ -78,7 +83,8 @@
             </p>
         </div>
     </div>
-
+</div>
+</div>
 <div id="edit_recipe"></div>
 
 <script src="/static/save.js"></script>
