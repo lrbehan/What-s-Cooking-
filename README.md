@@ -17,10 +17,11 @@ What's Cooking? is a fullstack web application designed to allow users to find, 
 * Spoonacular API
 
 ### Features
+
 Users are able to:
-| Create an account with a new email and password
-| Login with password
-| Search for new recipes
-| Save recipes to a user Cookbook
-| Rate recipes and view rated recipes
-| Edit ingredients and instructions and save the new recipe version
+* Create an account with a new email and password
+* Login with password
+* Search for new recipes
+* Save recipes to a user Cookbook
+* Rate recipes and view rated recipes
+* Edit ingredients and instructions and save the new recipe version
