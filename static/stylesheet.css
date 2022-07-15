@@ -1,30 +1,75 @@
-.logo-container {
+
+.account {
+    background-color: rgba(38, 70, 83, 0.6);
+    border:10px solid rgba(38, 70, 83, 0.6)
+}
+
+.account-container {
+    color: whitesmoke;
+    font-family: Albert Sans;
+    width: 25%;
     margin: auto;
-    width: 50%;
     text-align: center;
-    font-size: xx-large;
+}
+
+.button {
+    background-color: #1E4653;
+    border: solid #1E4653;
+    border-radius: 25px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    padding: 2px
+}
+
+.card {
+    border-radius: 3px;
+    border: 3px solid #1E4653;
+    margin: 2em;
+    padding: 1em;
+    display: inline-block;
+}
+
+.card-cookbook {
+    text-align: center;
+    border-radius: 3px;
+    border: 3px solid #1E4653;
+    margin: 2em;
+    padding: 1em;
+    padding-top: 3em;
+    display: inline-block;
+}
+
+.cookbook {
+    font-weight: bold;
+    text-align: center;
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px
 }
 
-.logo {
-    font-family: Satisfy;
+.edit {
+    margin:auto;
+    width: 80%
+}
+
+.flash-msg {
+    font-weight: bolder;
+    font-size: large;
+    font-family: Albert Sans;
     text-align: center;
-    margin-bottom: 10px;
-    margin-top: 20px
+    color: rgb(181, 0, 0)
 }
 
-.navbar-brand {
-    font-family: 'Satisfy', cursive;
+.header {
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .home {
     background: url('/static/images/nordwood-themes.jpg');
-    background-size: cover;
-}
-
-.search {
-    background: url('/static/images/nordwood-themes2.jpg');
     background-size: cover;
 }
 
@@ -41,37 +86,6 @@
     margin: 10px 10px;
     cursor: pointer;
     text-decoration:none;
-}
-
-.random {
-    margin:auto;
-    width: 50%;
-    text-align: center;
-}
-
-.random-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    border:2px solid #1E4653
-}
-
-.account-container {
-    color: whitesmoke;
-    font-family: Albert Sans;
-    width: 25%;
-    margin: auto;
-    text-align: center;
-}
-
-.account {
-    background-color: rgba(38, 70, 83, 0.6);
-    border:10px solid rgba(38, 70, 83, 0.6)
-}
-
-.title {
-    margin-top: 10px;
 }
 
 .login {
@@ -91,16 +105,43 @@
     padding: 8px
 }
 
-.button {
-    background-color: #1E4653;
-    border: solid #1E4653;
-    border-radius: 25px;
-    color: white;
+.logo {
+    font-family: Satisfy;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    padding: 2px
-    }
+    margin-bottom: 10px;
+    margin-top: 20px
+}
+
+.logo-container {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    font-size: xx-large;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.navbar-brand {
+    font-family: 'Satisfy', cursive;
+}
+
+.random {
+    margin:auto;
+    width: 50%;
+    text-align: center;
+}
+
+.random-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border:2px solid #1E4653
+}
+
+.rate {
+    margin-left: 60px
+}
 
 .rate-button {
     background-color: #1E4653;
@@ -112,44 +153,17 @@
     padding: 2px
 }
 
-.flash-msg {
-    font-weight: bolder;
-    font-size: large;
-    font-family: Albert Sans;
-    text-align: center;
-    color: rgb(181, 0, 0)
-}
-
-.card-cookbook {
-    text-align: center;
-    border-radius: 3px;
-    border: 3px solid #1E4653;
-    margin: 2em;
-    padding: 1em;
-    padding-top: 3em;
-    display: inline-block;
-  }
-
-  .card {
-    border-radius: 3px;
-    border: 3px solid #1E4653;
-    margin: 2em;
-    padding: 1em;
-    display: inline-block;
-  }
-.header {
-    font-weight: bold;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
 .rating {
     text-align: center;
     font-style: italic ;
     font-size: medium;
     padding-bottom: 20px;
     padding-top: 20px
+}
+
+.recipe-contents {
+    margin:auto;
+    width: 80%
 }
 
 .recipe-img {
@@ -161,13 +175,8 @@
     border: solid black
 }
 
-.recipe-contents {
-    margin:auto;
-    width: 80%
-}
-
-.edit {
-    margin:auto;
+.recipe-list {
+    margin: auto;
     width: 80%
 }
 
@@ -176,11 +185,6 @@
     width: 10%
 }
 
-.rate {
-    margin-left: 60px
-}
-
-.recipe-list {
-    margin: auto;
-    width: 80%
+.title {
+    margin-top: 10px;
 }

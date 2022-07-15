@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<h1 style="font-weight: bold; text-align:center; margin-top: 10px; margin-bottom: 20px">My Cookbook</h1>
+<h1 class="cookbook">My Cookbook</h1>
 
 <div class="container">
   <div class="row justify-content-center" style="margin-bottom: 20px">
@@ -40,21 +40,19 @@
     <div class="col-md-6">
       <h2 style="margin: auto; width: 40%">Rated Recipes</h2>
         <ul>
-        {% for rating in ratings %}
-        <div class="card-cookbook">
-            <img src="{{rating.recipe.image_path}}" width="70%">
-            <p>
-            <a class="link" href="/saved_recipe/{{rating.recipe.recipe_id}}">
-            {{rating.recipe.title}}
-            </a>
-            Your Rating: {{rating.score}}</div>
+          {% for rating in ratings %}
+            <div class="card-cookbook">
+              <img src="{{rating.recipe.image_path}}" width="70%">
+              <p>
+              <a class="link" href="/saved_recipe/{{rating.recipe.recipe_id}}">
+              {{rating.recipe.title}}</a>
+              Your Rating: {{rating.score}}
+            </div>
           {% endfor %}
-            </p>
+          </p>
         </ul>
     </div>
-
-    </div>
   </div>
-
+</div>
 
 {% endblock %}

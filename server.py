@@ -85,6 +85,7 @@ HEADERS = {
 	"X-RapidAPI-Key": API_KEY,
 	"X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"}
 
+
 @app.route('/')
 def homepage():
     """Show homepage."""
@@ -256,8 +257,6 @@ def save_updated_recipe():
     recipe_id = saved_recipe.recipe_id
 
     return redirect (f"/saved_recipe/{recipe_id}")
-
-    
 
 if __name__ == '__main__':
     connect_to_db(app)
