@@ -23,4 +23,4 @@ Users are able to:
     Search for new recipes with keywords ("vegan curry") or a list of ingredients ("asparagus, lemon, chicken")
     Save recipes to a user Cookbook
     Rate recipes and view rated recipes
-    Edit recipe ingredients and/or instructions and save the new recipe version to the user Cookbook 
+    Edit recipe ingredients and/or instructions, add any additional comments, and save the new recipe version to the user Cookbook 
