@@ -6,7 +6,14 @@ What's Cooking? is a fullstack web application designed to allow users to find, 
 
 !["Home"](https://user-images.githubusercontent.com/100890301/179389730-a0152a1a-241d-4289-8bee-2244291968d5.PNG)
 
-### Technology
+!["Search results"](https://user-images.githubusercontent.com/100890301/179390583-671f93a7-534c-4541-8f71-8b0a11c5a23e.PNG)
+
+!["Cookbook"](https://user-images.githubusercontent.com/100890301/179390591-71765db9-f80c-45da-a858-df7f38013872.PNG)
+
+![R-unsaved unrated](https://user-images.githubusercontent.com/100890301/179390600-0c639826-b477-4e12-a7ae-4eef4bbec202.PNG)
+
+!["R-saved and rated"](https://user-images.githubusercontent.com/100890301/179390602-cc80a4f4-de84-4fec-840d-68cd009710dd.PNG)
+### Technolog
 * Python
 * JavaScript/jQuery
 * AJAX/JSON
