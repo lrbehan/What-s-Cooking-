@@ -19,7 +19,7 @@ editBtn.addEventListener('click', (evt) => {
     document.querySelector('#edit_recipe').insertAdjacentHTML('beforeend', `
     <form id="edit_recipe_form" action="/edit_recipe" method="POST">
     
-    <p style="margin-left: 60px"><button class="button" id="save_updated_recipe">Save Edited Recipe</button></p> 
+    <p style="margin-left: 60px; margin-top: 20px"><button class="button" id="save_updated_recipe">Save Edited Recipe</button></p> 
     
     <p><textarea name="edit_ingredients" style="width:75%; height: 400px; margin-left: 60px"> ${originalIngredients} </textarea><p/>
     <textarea name="edit_instructions" style="width:75%; height: 400px; margin-left: 60px"> ${originalInstructions} </textarea>
