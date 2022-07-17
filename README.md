@@ -2,7 +2,9 @@ What's Cooking?
 ===============
 
 ### Description
-What's Cooking? is a fullstack web application designed to allow users to find, save, and customize recipes.  
+What's Cooking? is a fullstack web application designed to allow users to find, save, and customize recipes
+
+<alt="home" src="https://user-images.githubusercontent.com/100890301/179389852-35cf6467-025d-49a9-b195-8dce0dfcd3c5.PNG"> 
 
 ### Technology
 * Python
