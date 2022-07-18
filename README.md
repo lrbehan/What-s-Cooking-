@@ -2,7 +2,6 @@ What's Cooking?
 ===============
 
 ### Description
-===============
 
 What's Cooking? is a fullstack web application designed to allow users to find, save, and customize recipes.
 
@@ -23,7 +22,7 @@ Registered users have the option to save  recipes to their personal cookbook, ra
 The edit function enables the user to modify the ingreient list, the instructions, and add comments to their saved recipes.
 
 ### Technology
-==============
+
 * Python
 * JavaScript/jQuery
 * AJAX/JSON
@@ -37,7 +36,7 @@ The edit function enables the user to modify the ingreient list, the instruction
 * Spoonacular API
 
 ### Features
-============
+
  * Create an account with a new email and password
  * Login with correct email and password
  * Search for recipes with keywords or a list of ingredients
