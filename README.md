@@ -21,6 +21,8 @@ Registered users have the option to save  recipes to their personal cookbook, ra
 
 The edit function enables the user to modify the ingreient list, the instructions, and add comments to their saved recipes.
 
+<img width="630" alt="Editing" src="https://user-images.githubusercontent.com/100890301/197311109-3ec3d5b3-67a9-4993-9dfb-5acb9ffc5323.PNG">
+
 ## Technology
 
 * Python
